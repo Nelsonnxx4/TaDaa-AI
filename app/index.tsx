@@ -31,6 +31,7 @@ import {
   CookingScreen,
   IngredientStoreScreen,
 } from "@/components/RecipeFlow";
+import { PantryScreen, ProfileScreen } from "@/components/PantryProfile";
 import type { AppScreen, Recipe } from "@/types/app";
 
 type OnboardingSlide = {
@@ -163,11 +164,27 @@ export default function Index() {
             onOpenPaywall={() => setPaywallVisible(true)}
             recipe={selectedRecipe}
           />
+        ) : screen === "pantry" ? (
+          <PantryScreen />
+        ) : screen === "profile" ? (
+          <ProfileScreen
+            isPremium={isPremium}
+            onNavigate={setScreen}
+            onOpenPaywall={() => setPaywallVisible(true)}
+          />
         ) : (
-          <ComingSoonScreen
-            recipe={selectedRecipe}
-            screen={screen}
-            setScreen={setScreen}
+          <HomeScreen
+            isPremium={isPremium}
+            onOpenPaywall={() => setPaywallVisible(true)}
+            onRecipeSelect={(recipe) => {
+              setSelectedRecipe(recipe);
+              setScreen("ingredients");
+            }}
+            onSearch={(query) => {
+              setSelectedRecipe(getRecipeForQuery(query));
+              setScreen("ingredients");
+            }}
+            onSnap={handleSnap}
           />
         )}
 
@@ -490,43 +507,6 @@ function PaywallModal({
   );
 }
 
-function ComingSoonScreen({
-  recipe,
-  screen,
-  setScreen,
-}: {
-  recipe: Recipe;
-  screen: AppScreen;
-  setScreen: (screen: AppScreen) => void;
-}) {
-  const titles: Record<AppScreen, string> = {
-    home: "Home",
-    ingredients: "Ingredient and Store Finder",
-    cook: "Cooking Assistant",
-    pantry: "My Pantry",
-    profile: "Profile",
-  };
-
-  return (
-    <View style={styles.placeholderShell}>
-      <HeaderBar subtitle="MVP feature in progress" title={titles[screen]} />
-      <SurfaceCard style={styles.placeholderCard}>
-        <AppIcon color={palette.primary} name="restaurant" size={44} />
-        <Text style={styles.placeholderTitle}>{recipe.name}</Text>
-        <Text style={styles.placeholderBody}>
-          This screen is queued in the next feature commit. The selected recipe
-          and navigation state are already wired.
-        </Text>
-        <PrimaryButton
-          icon="home"
-          label="Back to Home"
-          onPress={() => setScreen("home")}
-        />
-      </SurfaceCard>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: palette.background,
@@ -820,28 +800,6 @@ const styles = StyleSheet.create({
   },
   paywallFooter: {
     ...typography.label,
-    color: palette.textMuted,
-    textAlign: "center",
-  },
-  placeholderShell: {
-    flex: 1,
-    paddingBottom: 128,
-    paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.md,
-  },
-  placeholderCard: {
-    alignItems: "center",
-    flex: 1,
-    gap: spacing.md,
-    justifyContent: "center",
-  },
-  placeholderTitle: {
-    ...typography.headline,
-    color: palette.primary,
-    textAlign: "center",
-  },
-  placeholderBody: {
-    ...typography.body,
     color: palette.textMuted,
     textAlign: "center",
   },
