@@ -538,8 +538,8 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: spacing.lg,
     justifyContent: "space-between",
+    marginHorizontal: spacing.gutter,
     paddingBottom: spacing.xl,
-    paddingHorizontal: spacing.gutter,
     paddingTop: spacing.lg,
   },
   onboardingMain: {
@@ -562,6 +562,7 @@ const styles = StyleSheet.create({
   },
   onboardingBottom: {
     gap: spacing.md,
+    width: "100%",
   },
   onboardingTitle: {
     ...typography.display,

@@ -369,8 +369,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   progressRow: {
+    alignSelf: "stretch",
     flexDirection: "row",
     gap: spacing.xs,
+    width: "100%",
   },
   progressTrack: {
     backgroundColor: "rgba(255, 255, 255, 0.35)",
