@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
   View,
+  useWindowDimensions,
 } from "react-native";
 
 import {
@@ -204,8 +205,14 @@ export default function Index() {
 
 function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const [index, setIndex] = useState(0);
+  const { width } = useWindowDimensions();
   const slide = onboardingSlides[index];
   const isHero = Boolean(slide.image);
+  const isNarrow = width < 600;
+  const contentWidth = Math.min(
+    Math.max(width - spacing.gutter * 2, 240),
+    isNarrow ? 350 : 390,
+  );
 
   return (
     <SafeAreaView
@@ -220,7 +227,15 @@ function OnboardingScreen({ onDone }: { onDone: () => void }) {
       ) : null}
       {isHero ? <View style={styles.heroScrim} /> : null}
 
-      <View style={styles.onboardingContent}>
+      <View
+        style={[
+          styles.onboardingContent,
+          { width: contentWidth },
+          isNarrow
+            ? styles.onboardingContentNarrow
+            : styles.onboardingContentWide,
+        ]}
+      >
         <ProgressDots current={index} total={onboardingSlides.length} />
 
         <View style={styles.onboardingMain}>
@@ -538,9 +553,14 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: spacing.lg,
     justifyContent: "space-between",
-    marginHorizontal: spacing.gutter,
     paddingBottom: spacing.xl,
     paddingTop: spacing.lg,
+  },
+  onboardingContentNarrow: {
+    marginLeft: spacing.gutter,
+  },
+  onboardingContentWide: {
+    alignSelf: "center",
   },
   onboardingMain: {
     flex: 1,
