@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TaDaa-AI",
-    "slug": "TaDaa-AI",
+    "slug": "tadaa-ai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e901b5ec-23e8-414d-9994-83d2cad3015c"
+      }
+    },
+    "owner": "nelsonnxx4s-team"
   }
 }
