@@ -14,7 +14,6 @@ import {
   GhostButton,
   HeaderBar,
   Pill,
-  PrimaryButton,
   SectionHeader,
   SurfaceCard,
 } from "@/components/AppPrimitives";

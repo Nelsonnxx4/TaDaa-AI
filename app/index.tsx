@@ -38,11 +38,11 @@ type OnboardingSlide = {
   title: string;
   body: string;
   image?: string;
-  steps?: Array<{
+  steps?: {
     icon: "camera" | "sparkles" | "restaurant";
     title: string;
     body: string;
-  }>;
+  }[];
 };
 
 const onboardingSlides: OnboardingSlide[] = [

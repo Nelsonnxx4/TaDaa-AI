@@ -214,12 +214,12 @@ export function HeaderBar({
   );
 }
 
-const tabs: Array<{
+const tabs: {
   key: AppScreen | "snap";
   label: string;
   icon: IconName;
   activeFor: AppScreen[];
-}> = [
+}[] = [
   { key: "home", label: "Home", icon: "home", activeFor: ["home"] },
   {
     key: "pantry",
