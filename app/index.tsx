@@ -27,6 +27,10 @@ import {
 } from "@/components/AppPrimitives";
 import { palette, radius, shadow, spacing, typography } from "@/constants/theme";
 import { heroImage, inspirationChips, recipes } from "@/data/mock";
+import {
+  CookingScreen,
+  IngredientStoreScreen,
+} from "@/components/RecipeFlow";
 import type { AppScreen, Recipe } from "@/types/app";
 
 type OnboardingSlide = {
@@ -144,6 +148,20 @@ export default function Index() {
               setScreen("ingredients");
             }}
             onSnap={handleSnap}
+          />
+        ) : screen === "ingredients" ? (
+          <IngredientStoreScreen
+            onBack={() => setScreen("home")}
+            onStartCooking={() => setScreen("cook")}
+            recipe={selectedRecipe}
+          />
+        ) : screen === "cook" ? (
+          <CookingScreen
+            isPremium={isPremium}
+            onBack={() => setScreen("ingredients")}
+            onFinish={() => setScreen("home")}
+            onOpenPaywall={() => setPaywallVisible(true)}
+            recipe={selectedRecipe}
           />
         ) : (
           <ComingSoonScreen
