@@ -5,7 +5,10 @@ import { Fragment } from "react";
 export default function RootLayout() {
   return (
     <Fragment>
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack initialRouteName="onboarding" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="(tabs)" />
+      </Stack>
       <StatusBar style="dark" />
     </Fragment>
   );
