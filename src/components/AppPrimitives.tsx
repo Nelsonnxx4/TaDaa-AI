@@ -179,10 +179,12 @@ export function HeaderBar({
   title = "Ta-Daa AI",
   subtitle,
   premium = false,
+  showStatus = true,
 }: {
   title?: string;
   subtitle?: string;
   premium?: boolean;
+  showStatus?: boolean;
 }) {
   return (
     <View style={styles.headerBar}>
@@ -191,21 +193,23 @@ export function HeaderBar({
         {subtitle ? <Text style={styles.headerSubtitle}>{subtitle}</Text> : null}
       </View>
       <View style={styles.headerActions}>
-        <View style={[styles.statusPill, premium && styles.statusPillPremium]}>
-          <AppIcon
-            color={premium ? palette.primary : palette.textMuted}
-            name={premium ? "sparkles" : "lock-closed"}
-            size={14}
-          />
-          <Text
-            style={[
-              styles.statusText,
-              premium ? styles.statusPremiumText : styles.statusFreeText,
-            ]}
-          >
-            {premium ? "Premium" : "Free"}
-          </Text>
-        </View>
+        {showStatus ? (
+          <View style={[styles.statusPill, premium && styles.statusPillPremium]}>
+            <AppIcon
+              color={premium ? palette.primary : palette.textMuted}
+              name={premium ? "sparkles" : "lock-closed"}
+              size={14}
+            />
+            <Text
+              style={[
+                styles.statusText,
+                premium ? styles.statusPremiumText : styles.statusFreeText,
+              ]}
+            >
+              {premium ? "Premium" : "Free"}
+            </Text>
+          </View>
+        ) : null}
         <View style={styles.avatar}>
           <AppIcon color={palette.primary} name="person" size={20} />
         </View>

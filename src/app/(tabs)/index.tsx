@@ -31,7 +31,7 @@ import { getRecipeForQuery } from "@/utils/recipes";
 
 export default function HomeRoute() {
   const router = useRouter();
-  const { isPremium, openPaywall } = useAppAccess();
+  const { isPremium, openPaywall, showPremiumUI } = useAppAccess();
 
   const openRecipe = (recipe: Recipe) => {
     router.push({
@@ -55,12 +55,7 @@ export default function HomeRoute() {
   };
 
   const handleSnap = () => {
-    if (!isPremium) {
-      openPaywall();
-      return;
-    }
-
-    openRecipe(recipes[2]);
+    router.push("/camera");
   };
 
   return (
@@ -74,6 +69,7 @@ export default function HomeRoute() {
           onOpenPaywall={openPaywall}
           onRecipeSelect={openRecipe}
           onSearch={handleSearch}
+          showPremiumUI={showPremiumUI}
           onSnap={handleSnap}
         />
       </KeyboardAvoidingView>
@@ -86,12 +82,14 @@ function HomeScreen({
   onOpenPaywall,
   onRecipeSelect,
   onSearch,
+  showPremiumUI,
   onSnap,
 }: {
   isPremium: boolean;
   onOpenPaywall: () => void;
   onRecipeSelect: (recipe: Recipe) => void;
   onSearch: (query: string) => void;
+  showPremiumUI: boolean;
   onSnap: () => void;
 }) {
   const [query, setQuery] = useState("");
@@ -120,7 +118,10 @@ function HomeScreen({
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <HeaderBar premium={isPremium} subtitle="Snap, shop and cook" />
+      <HeaderBar
+        premium={showPremiumUI && isPremium}
+        subtitle="Snap, shop and cook"
+      />
 
       <SurfaceCard style={styles.searchPanel}>
         <View style={styles.searchInputRow}>
@@ -162,7 +163,7 @@ function HomeScreen({
           <View style={styles.snapTextBlock}>
             <View style={styles.snapTitleRow}>
               <Text style={styles.snapTitle}>Snap Your Food</Text>
-              {!isPremium ? (
+              {showPremiumUI && !isPremium ? (
                 <View style={styles.lockPill}>
                   <AppIcon color={palette.inverse} name="lock-closed" size={12} />
                   <Text style={styles.lockText}>Premium</Text>
@@ -176,7 +177,7 @@ function HomeScreen({
         </View>
       </Pressable>
 
-      {!isPremium ? (
+      {showPremiumUI && !isPremium ? (
         <GhostButton
           icon="sparkles"
           label="See Premium"

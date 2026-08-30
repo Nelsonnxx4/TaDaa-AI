@@ -16,7 +16,7 @@ const routes: Record<AppScreen, "/" | "/pantry" | "/profile" | "/shop"> = {
 
 export default function ProfileRoute() {
   const router = useRouter();
-  const { isPremium, openPaywall } = useAppAccess();
+  const { isPremium, openPaywall, showPremiumUI } = useAppAccess();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -24,6 +24,7 @@ export default function ProfileRoute() {
         isPremium={isPremium}
         onNavigate={(screen) => router.push(routes[screen])}
         onOpenPaywall={openPaywall}
+        showPremiumUI={showPremiumUI}
       />
     </SafeAreaView>
   );

@@ -37,6 +37,15 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
+          name="camera"
+          options={{
+            title: "Snap",
+            tabBarIcon: ({ color, size }) => (
+              <AppIcon color={color} name="camera" size={size} />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="shop"
           options={{
             title: "Shop",
