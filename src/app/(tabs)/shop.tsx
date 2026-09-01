@@ -40,7 +40,7 @@ export default function ShopRoute() {
 			>
 				{step === "ingredients" ? (
 					<IngredientStoreScreen
-						onBack={() => router.replace("/")}
+						onBack={() => router.replace("/home")}
 						onStartCooking={() => setStep("cook")}
 						recipe={recipe}
 					/>
@@ -48,7 +48,7 @@ export default function ShopRoute() {
 					<CookingScreen
 						isPremium={isPremium}
 						onBack={() => setStep("ingredients")}
-						onFinish={() => router.replace("/")}
+						onFinish={() => router.replace("/home")}
 						onOpenPaywall={openPaywall}
 						recipe={recipe}
 					/>

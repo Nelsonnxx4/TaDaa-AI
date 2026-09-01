@@ -42,7 +42,7 @@ export default function CameraRoute() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.appShell}>
         <View style={styles.screenHeader}>
-          <Pressable onPress={() => router.replace("/")} style={styles.iconButton}>
+          <Pressable onPress={() => router.replace("/home")} style={styles.iconButton}>
             <AppIcon color={palette.primary} name="chevron-back" size={24} />
           </Pressable>
           <Text style={styles.screenTitle}>Food Snap</Text>

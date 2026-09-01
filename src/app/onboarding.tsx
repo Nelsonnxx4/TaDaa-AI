@@ -147,7 +147,7 @@ export default function OnboardingRoute() {
             label={index === onboardingSlides.length - 1 ? "Get Started" : "Next"}
             onPress={() => {
               if (index === onboardingSlides.length - 1) {
-                router.replace("/");
+                router.replace("/auth");
               } else {
                 setIndex((current) => current + 1);
               }

@@ -6,8 +6,8 @@ import { palette } from "@/constants/theme";
 import { useAppAccess } from "@/context/AppAccess";
 import type { AppScreen } from "@/types/app";
 
-const routes: Record<AppScreen, "/" | "/pantry" | "/profile" | "/shop"> = {
-  home: "/",
+const routes: Record<AppScreen, "/home" | "/pantry" | "/profile" | "/shop"> = {
+  home: "/home",
   pantry: "/pantry",
   ingredients: "/shop",
   cook: "/shop",
