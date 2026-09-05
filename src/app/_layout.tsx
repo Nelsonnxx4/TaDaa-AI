@@ -13,6 +13,9 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="auth" />
+        <Stack.Screen name="forgot-password" />
+        <Stack.Screen name="verify-reset-code" />
+        <Stack.Screen name="new-password" />
         <Stack.Screen name="(tabs)" />
       </Stack>
       <StatusBar style="dark" />
