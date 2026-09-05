@@ -232,16 +232,12 @@ export function IngredientStoreScreen({
 
 export function CookingScreen({
   recipe,
-  isPremium,
   onBack,
   onFinish,
-  onOpenPaywall,
 }: {
   recipe: Recipe;
-  isPremium: boolean;
   onBack: () => void;
   onFinish: () => void;
-  onOpenPaywall: () => void;
 }) {
   const [stepIndex, setStepIndex] = useState(0);
   const currentStep = recipe.steps[stepIndex];
@@ -331,31 +327,20 @@ export function CookingScreen({
         </View>
       </SurfaceCard>
 
-      <Pressable
-        onPress={isPremium ? undefined : onOpenPaywall}
-        style={styles.voiceBar}
-      >
+      <View style={styles.voiceBar}>
         <View style={styles.voiceWave}>
           {[14, 26, 18, 34, 22].map((height, index) => (
             <View key={index} style={[styles.voiceWaveBar, { height }]} />
           ))}
         </View>
         <View style={styles.voiceCopy}>
-          <Text style={styles.voiceTitle}>
-            {isPremium ? "Listening for next step" : "Voice mode is Premium"}
-          </Text>
+          <Text style={styles.voiceTitle}>Listening for next step</Text>
           <Text style={styles.voiceBody}>
-            {isPremium
-              ? "Ask questions or say next step while cooking."
-              : "Unlock hands-free guidance and cooking Q&A."}
+            Ask questions or say next step while cooking.
           </Text>
         </View>
-        <AppIcon
-          color={isPremium ? palette.primary : palette.textMuted}
-          name={isPremium ? "mic" : "lock-closed"}
-          size={24}
-        />
-      </Pressable>
+        <AppIcon color={palette.primary} name="mic" size={24} />
+      </View>
 
       <View style={styles.cookingActions}>
         <GhostButton

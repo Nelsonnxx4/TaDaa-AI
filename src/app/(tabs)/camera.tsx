@@ -1,7 +1,15 @@
 import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
-import { useEffect } from "react";
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import {
+  Alert,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import {
   AppIcon,
@@ -10,32 +18,74 @@ import {
   SurfaceCard,
 } from "@/components/AppPrimitives";
 import { palette, radius, shadow, spacing, typography } from "@/constants/theme";
-import { useAppAccess } from "@/context/AppAccess";
 import { heroImage, recipes } from "@/data/mock";
 
 const snapRecipe = recipes[2];
 
 export default function CameraRoute() {
   const router = useRouter();
-  const { isPremium, openPaywall, showPremiumUI } = useAppAccess();
-  const isLocked = showPremiumUI && !isPremium;
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState<string | null>(null);
+  const hasSelectedPhoto = Boolean(selectedPhotoUri);
 
-  useEffect(() => {
-    if (isLocked) {
-      openPaywall();
-    }
-  }, [isLocked, openPaywall]);
-
-  const handleCapture = () => {
-    if (isLocked) {
-      openPaywall();
-      return;
-    }
-
+  const continueToShop = () => {
     router.push({
       pathname: "/shop",
       params: { recipeId: snapRecipe.id },
     });
+  };
+
+  const handleImageResult = (result: ImagePicker.ImagePickerResult) => {
+    if (result.canceled) {
+      return;
+    }
+
+    const imageUri = result.assets[0]?.uri;
+
+    if (imageUri) {
+      setSelectedPhotoUri(imageUri);
+    }
+  };
+
+  const openCamera = async () => {
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (!permission.granted) {
+      Alert.alert(
+        "Camera access needed",
+        "Allow camera access to snap a dish photo.",
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      mediaTypes: ["images"],
+      quality: 0.85,
+    });
+
+    handleImageResult(result);
+  };
+
+  const openImageLibrary = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permission.granted) {
+      Alert.alert(
+        "Photo access needed",
+        "Allow photo access to upload a dish image.",
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      mediaTypes: ["images"],
+      quality: 0.85,
+    });
+
+    handleImageResult(result);
   };
 
   return (
@@ -47,18 +97,14 @@ export default function CameraRoute() {
           </Pressable>
           <Text style={styles.screenTitle}>Food Snap</Text>
           <View style={styles.iconButton}>
-            <AppIcon
-              color={isLocked ? palette.textMuted : palette.primary}
-              name={isLocked ? "lock-closed" : "sparkles"}
-              size={22}
-            />
+            <AppIcon color={palette.primary} name="camera" size={22} />
           </View>
         </View>
 
         <View style={styles.cameraPreview}>
           <Image
             contentFit="cover"
-            source={{ uri: heroImage }}
+            source={{ uri: selectedPhotoUri ?? heroImage }}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.previewOverlay} />
@@ -77,23 +123,23 @@ export default function CameraRoute() {
             </View>
             <View style={styles.resultCopy}>
               <Text style={styles.resultTitle}>
-                {isLocked ? "Premium scanner locked" : "Ready to scan"}
+                {hasSelectedPhoto ? "Photo ready" : "Ready to scan"}
               </Text>
               <Text style={styles.resultBody}>
-                {isLocked
-                  ? "Unlock Food Snap to identify dishes from photos."
-                  : "Capture a dish photo to create the ingredient plan."}
+                {hasSelectedPhoto
+                  ? "Analyze this image to create the ingredient plan."
+                  : "Capture or upload a dish photo to create the ingredient plan."}
               </Text>
             </View>
           </View>
         </SurfaceCard>
 
         <View style={styles.cameraActions}>
-          <GhostButton icon="images" label="Upload" onPress={handleCapture} />
+          <GhostButton icon="images" label="Upload" onPress={openImageLibrary} />
           <Pressable
             accessibilityLabel="Snap food photo"
             accessibilityRole="button"
-            onPress={handleCapture}
+            onPress={openCamera}
             style={({ pressed }) => [
               styles.captureButton,
               pressed && styles.capturePressed,
@@ -101,13 +147,13 @@ export default function CameraRoute() {
           >
             <View style={styles.captureInner} />
           </Pressable>
-          <GhostButton icon="flash" label="Flash" onPress={handleCapture} />
+          <GhostButton icon="sparkles" label="Demo" onPress={continueToShop} />
         </View>
 
         <PrimaryButton
-          icon={isLocked ? "lock-closed" : "sparkles"}
-          label={isLocked ? "Unlock Snap" : "Use Demo Scan"}
-          onPress={handleCapture}
+          icon={hasSelectedPhoto ? "sparkles" : "camera"}
+          label={hasSelectedPhoto ? "Analyze Photo" : "Open Camera"}
+          onPress={hasSelectedPhoto ? continueToShop : openCamera}
         />
       </View>
     </SafeAreaView>
@@ -154,8 +200,12 @@ const styles = StyleSheet.create({
     ...(shadow.card ?? {}),
   },
   previewOverlay: {
-    ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(24, 33, 28, 0.28)",
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
   },
   scanFrame: {
     borderColor: "rgba(248, 250, 247, 0.38)",

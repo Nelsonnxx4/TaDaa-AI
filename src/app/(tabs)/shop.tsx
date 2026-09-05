@@ -9,7 +9,6 @@ import {
 
 import { CookingScreen, IngredientStoreScreen } from "@/components/RecipeFlow";
 import { palette } from "@/constants/theme";
-import { useAppAccess } from "@/context/AppAccess";
 import { getRecipeForRouteParams } from "@/utils/recipes";
 
 type ShopStep = "ingredients" | "cook";
@@ -20,7 +19,6 @@ export default function ShopRoute() {
 		query?: string;
 		recipeId?: string;
 	}>();
-	const { isPremium, openPaywall } = useAppAccess();
 	const [step, setStep] = useState<ShopStep>("ingredients");
 
 	const recipe = useMemo(
@@ -46,10 +44,8 @@ export default function ShopRoute() {
 					/>
 				) : (
 					<CookingScreen
-						isPremium={isPremium}
 						onBack={() => setStep("ingredients")}
 						onFinish={() => router.replace("/home")}
-						onOpenPaywall={openPaywall}
 						recipe={recipe}
 					/>
 				)}

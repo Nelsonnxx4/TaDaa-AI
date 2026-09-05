@@ -44,6 +44,13 @@
       "expo-audio",
       "expo-font",
       "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Allow Ta-Daa AI to open your camera for Food Snap.",
+          "photosPermission": "Allow Ta-Daa AI to choose food photos from your library."
+        }
+      ],
       "expo-web-browser",
       "expo-status-bar"
     ],

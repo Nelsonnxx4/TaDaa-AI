@@ -178,8 +178,12 @@ const styles = StyleSheet.create({
 		backgroundColor: palette.dark,
 	},
 	heroScrim: {
-		...StyleSheet.absoluteFillObject,
 		backgroundColor: "rgba(24, 33, 28, 0.44)",
+		bottom: 0,
+		left: 0,
+		position: "absolute",
+		right: 0,
+		top: 0,
 	},
 	onboardingContent: {
 		flex: 1,

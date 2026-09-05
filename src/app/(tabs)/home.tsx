@@ -16,14 +16,12 @@ import {
 import {
   AppIcon,
   FoodCard,
-  GhostButton,
   HeaderBar,
   Pill,
   PrimaryButton,
   SectionHeader,
   SurfaceCard,
 } from "@/components/AppPrimitives";
-import { useAppAccess } from "@/context/AppAccess";
 import { heroImage, inspirationChips, recipes } from "@/data/mock";
 import { palette, radius, shadow, spacing, typography } from "@/constants/theme";
 import type { Recipe } from "@/types/app";
@@ -31,7 +29,6 @@ import { getRecipeForQuery } from "@/utils/recipes";
 
 export default function HomeRoute() {
   const router = useRouter();
-  const { isPremium, openPaywall, showPremiumUI } = useAppAccess();
 
   const openRecipe = (recipe: Recipe) => {
     router.push({
@@ -65,11 +62,8 @@ export default function HomeRoute() {
         style={styles.appShell}
       >
         <HomeScreen
-          isPremium={isPremium}
-          onOpenPaywall={openPaywall}
           onRecipeSelect={openRecipe}
           onSearch={handleSearch}
-          showPremiumUI={showPremiumUI}
           onSnap={handleSnap}
         />
       </KeyboardAvoidingView>
@@ -78,18 +72,12 @@ export default function HomeRoute() {
 }
 
 function HomeScreen({
-  isPremium,
-  onOpenPaywall,
   onRecipeSelect,
   onSearch,
-  showPremiumUI,
   onSnap,
 }: {
-  isPremium: boolean;
-  onOpenPaywall: () => void;
   onRecipeSelect: (recipe: Recipe) => void;
   onSearch: (query: string) => void;
-  showPremiumUI: boolean;
   onSnap: () => void;
 }) {
   const [query, setQuery] = useState("");
@@ -118,10 +106,7 @@ function HomeScreen({
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <HeaderBar
-        premium={showPremiumUI && isPremium}
-        subtitle="Snap, shop and cook"
-      />
+      <HeaderBar subtitle="Snap, shop and cook" />
 
       <SurfaceCard style={styles.searchPanel}>
         <View style={styles.searchInputRow}>
@@ -163,12 +148,6 @@ function HomeScreen({
           <View style={styles.snapTextBlock}>
             <View style={styles.snapTitleRow}>
               <Text style={styles.snapTitle}>Snap Your Food</Text>
-              {showPremiumUI && !isPremium ? (
-                <View style={styles.lockPill}>
-                  <AppIcon color={palette.inverse} name="lock-closed" size={12} />
-                  <Text style={styles.lockText}>Premium</Text>
-                </View>
-              ) : null}
             </View>
             <Text style={styles.snapBody}>
               Turn a dish photo into ingredients, stores, and cooking steps.
@@ -176,14 +155,6 @@ function HomeScreen({
           </View>
         </View>
       </Pressable>
-
-      {showPremiumUI && !isPremium ? (
-        <GhostButton
-          icon="sparkles"
-          label="See Premium"
-          onPress={onOpenPaywall}
-        />
-      ) : null}
 
       <View>
         <ScrollView
@@ -264,8 +235,12 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   snapOverlay: {
-    ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(24, 33, 28, 0.42)",
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
   },
   snapCopy: {
     alignItems: "flex-end",
@@ -292,19 +267,6 @@ const styles = StyleSheet.create({
   },
   snapTitle: {
     ...typography.headline,
-    color: palette.inverse,
-  },
-  lockPill: {
-    alignItems: "center",
-    backgroundColor: "rgba(24, 33, 28, 0.72)",
-    borderRadius: radius.full,
-    flexDirection: "row",
-    gap: spacing.xs,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  lockText: {
-    ...typography.label,
     color: palette.inverse,
   },
   snapBody: {

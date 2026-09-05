@@ -2,6 +2,7 @@ import type { ComponentProps, PropsWithChildren } from "react";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import {
+  type ColorValue,
   Pressable,
   StyleProp,
   StyleSheet,
@@ -17,7 +18,7 @@ type IconName = ComponentProps<typeof Ionicons>["name"];
 
 type IconProps = {
   name: IconName;
-  color?: string;
+  color?: ColorValue;
   size?: number;
 };
 
@@ -178,13 +179,9 @@ export function FoodCard({
 export function HeaderBar({
   title = "Ta-Daa AI",
   subtitle,
-  premium = false,
-  showStatus = true,
 }: {
   title?: string;
   subtitle?: string;
-  premium?: boolean;
-  showStatus?: boolean;
 }) {
   return (
     <View style={styles.headerBar}>
@@ -193,23 +190,6 @@ export function HeaderBar({
         {subtitle ? <Text style={styles.headerSubtitle}>{subtitle}</Text> : null}
       </View>
       <View style={styles.headerActions}>
-        {showStatus ? (
-          <View style={[styles.statusPill, premium && styles.statusPillPremium]}>
-            <AppIcon
-              color={premium ? palette.primary : palette.textMuted}
-              name={premium ? "sparkles" : "lock-closed"}
-              size={14}
-            />
-            <Text
-              style={[
-                styles.statusText,
-                premium ? styles.statusPremiumText : styles.statusFreeText,
-              ]}
-            >
-              {premium ? "Premium" : "Free"}
-            </Text>
-          </View>
-        ) : null}
         <View style={styles.avatar}>
           <AppIcon color={palette.primary} name="person" size={20} />
         </View>
@@ -436,27 +416,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.sm,
-  },
-  statusPill: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    borderRadius: radius.full,
-    flexDirection: "row",
-    gap: spacing.xs,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  statusPillPremium: {
-    backgroundColor: palette.primarySoft,
-  },
-  statusText: {
-    ...typography.label,
-  },
-  statusFreeText: {
-    color: palette.textMuted,
-  },
-  statusPremiumText: {
-    color: palette.primary,
   },
   avatar: {
     alignItems: "center",

@@ -11,7 +11,6 @@ import {
 
 import {
   AppIcon,
-  GhostButton,
   HeaderBar,
   Pill,
   SectionHeader,
@@ -174,27 +173,16 @@ export function PantryScreen() {
 }
 
 export function ProfileScreen({
-  isPremium,
-  onOpenPaywall,
   onNavigate,
-  showPremiumUI,
 }: {
-  isPremium: boolean;
-  onOpenPaywall: () => void;
   onNavigate: (screen: AppScreen) => void;
-  showPremiumUI: boolean;
 }) {
-  const featureAccessUnlocked = !showPremiumUI || isPremium;
-
   return (
     <ScrollView
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <HeaderBar
-        premium={showPremiumUI && isPremium}
-        subtitle="Preferences and account"
-      />
+      <HeaderBar subtitle="Preferences and account" />
 
       <SurfaceCard style={styles.profileHero}>
         <View style={styles.profileAvatar}>
@@ -202,17 +190,8 @@ export function ProfileScreen({
         </View>
         <View style={styles.profileCopy}>
           <Text style={styles.profileName}>Nelson</Text>
-          <Text style={styles.profileMeta}>
-            {showPremiumUI
-              ? isPremium
-                ? "Premium member"
-                : "Free plan"
-              : "All features unlocked for testing"}
-          </Text>
+          <Text style={styles.profileMeta}>Home cook</Text>
         </View>
-        {showPremiumUI && !isPremium ? (
-          <GhostButton icon="sparkles" label="Upgrade" onPress={onOpenPaywall} />
-        ) : null}
       </SurfaceCard>
 
       <View style={styles.menuGrid}>
@@ -233,18 +212,6 @@ export function ProfileScreen({
           icon="basket"
           onPress={() => onNavigate("pantry")}
           title="Shopping History"
-        />
-        <ProfileAction
-          body={
-            showPremiumUI
-              ? isPremium
-                ? "Premium active with Food Snap and Voice."
-                : "Unlock camera scanning and cooking voice mode."
-              : "Food Snap and Voice are available for this test build."
-          }
-          icon={featureAccessUnlocked ? "sparkles" : "lock-closed"}
-          onPress={showPremiumUI ? onOpenPaywall : () => onNavigate("home")}
-          title={showPremiumUI ? "Subscription" : "Feature Access"}
         />
         <ProfileAction
           body="Notifications, units, privacy, and app settings."
