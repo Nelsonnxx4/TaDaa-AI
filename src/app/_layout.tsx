@@ -1,3 +1,5 @@
+import "../styles/globals.css";
+
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Fragment } from "react";
