@@ -2,6 +2,8 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Fragment } from "react";
 
+import "../styles/globals.css";
+
 export const unstable_settings = {
   initialRouteName: "index",
 };
