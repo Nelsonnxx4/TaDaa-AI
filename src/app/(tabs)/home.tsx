@@ -106,7 +106,7 @@ function HomeScreen({
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <HeaderBar subtitle="Snap, shop and cook" />
+      <HeaderBar subtitle="Recent food plans" title="History" />
 
       <SurfaceCard style={styles.searchPanel}>
         <View style={styles.searchInputRow}>
@@ -115,7 +115,7 @@ function HomeScreen({
             onChangeText={setQuery}
             onSubmitEditing={() => onSearch(query)}
             placeholder="What do you want to eat today?"
-            placeholderTextColor="#6C7A71"
+            placeholderTextColor={palette.textMuted}
             returnKeyType="search"
             style={styles.searchInput}
             value={query}
@@ -135,24 +135,21 @@ function HomeScreen({
           pressed && styles.pressedBanner,
         ]}
       >
-        <Image
-          contentFit="cover"
-          source={{ uri: heroImage }}
-          style={StyleSheet.absoluteFill}
-        />
-        <View style={styles.snapOverlay} />
+        <View style={styles.snapProduct}>
+          <Image
+            contentFit="cover"
+            source={{ uri: heroImage }}
+            style={styles.snapImage}
+          />
+        </View>
         <View style={styles.snapCopy}>
-          <View style={styles.snapIcon}>
-            <AppIcon color="#684000" name="camera" size={28} />
-          </View>
-          <View style={styles.snapTextBlock}>
-            <View style={styles.snapTitleRow}>
-              <Text style={styles.snapTitle}>Snap Your Food</Text>
-            </View>
-            <Text style={styles.snapBody}>
-              Turn a dish photo into ingredients, stores, and cooking steps.
-            </Text>
-          </View>
+          <Text style={styles.snapTitle}>Snap Your Food</Text>
+          <Text style={styles.snapBody}>
+            Turn a dish photo into ingredients, stores, and cooking steps.
+          </Text>
+        </View>
+        <View style={styles.snapButton}>
+          <AppIcon color={palette.inverse} name="camera" size={21} />
         </View>
       </Pressable>
 
@@ -174,16 +171,22 @@ function HomeScreen({
       </View>
 
       <View>
-        <SectionHeader action="View all" title="Recommended for tonight" />
-        <View style={styles.recipeGrid}>
+        <SectionHeader action="Saved 8" title="Recent items" />
+        <ScrollView
+          contentContainerStyle={styles.recipeRail}
+          horizontal
+          nestedScrollEnabled
+          showsHorizontalScrollIndicator={false}
+        >
           {visibleRecipes.map((recipe) => (
-            <FoodCard
-              key={recipe.id}
-              onPress={() => onRecipeSelect(recipe)}
-              recipe={recipe}
-            />
+            <View key={recipe.id} style={styles.recipeCardShell}>
+              <FoodCard
+                onPress={() => onRecipeSelect(recipe)}
+                recipe={recipe}
+              />
+            </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
     </ScrollView>
   );
@@ -202,15 +205,17 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: 128,
     paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.md,
+    paddingTop: spacing.lg,
   },
   searchPanel: {
+    backgroundColor: palette.surface,
     gap: spacing.md,
+    padding: spacing.sm,
   },
   searchInputRow: {
     alignItems: "center",
     backgroundColor: palette.surfaceLow,
-    borderRadius: radius.md,
+    borderRadius: radius.full,
     flexDirection: "row",
     gap: spacing.sm,
     minHeight: 52,
@@ -224,62 +229,65 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   snapBanner: {
+    alignItems: "center",
+    backgroundColor: palette.surfaceLow,
     borderRadius: radius.xl,
-    justifyContent: "flex-end",
-    minHeight: 178,
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+    minHeight: 134,
     overflow: "hidden",
-    padding: spacing.lg,
+    padding: spacing.md,
     ...(shadow.card ?? {}),
   },
   pressedBanner: {
     opacity: 0.9,
   },
-  snapOverlay: {
-    backgroundColor: "rgba(24, 33, 28, 0.42)",
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-    right: 0,
-    top: 0,
+  snapProduct: {
+    alignItems: "center",
+    backgroundColor: palette.surface,
+    borderRadius: radius.xl,
+    height: 96,
+    justifyContent: "center",
+    overflow: "hidden",
+    width: 96,
+  },
+  snapImage: {
+    height: "100%",
+    width: "100%",
   },
   snapCopy: {
-    alignItems: "flex-end",
-    flexDirection: "row",
-    gap: spacing.md,
-  },
-  snapIcon: {
-    alignItems: "center",
-    backgroundColor: palette.amberSoft,
-    borderRadius: radius.lg,
-    height: 56,
-    justifyContent: "center",
-    width: 56,
-  },
-  snapTextBlock: {
     flex: 1,
     gap: spacing.xs,
-  },
-  snapTitleRow: {
-    alignItems: "center",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.sm,
+    minWidth: 0,
   },
   snapTitle: {
-    ...typography.headline,
-    color: palette.inverse,
+    ...typography.title,
+    color: palette.text,
   },
   snapBody: {
     ...typography.bodySmall,
-    color: "rgba(248, 250, 247, 0.9)",
+    color: palette.textMuted,
+  },
+  snapButton: {
+    alignItems: "center",
+    backgroundColor: palette.primary,
+    borderRadius: radius.full,
+    height: 46,
+    justifyContent: "center",
+    width: 46,
+    ...(shadow.float ?? {}),
   },
   chipRow: {
     gap: spacing.sm,
     paddingRight: spacing.gutter,
   },
-  recipeGrid: {
+  recipeRail: {
     flexDirection: "row",
-    flexWrap: "wrap",
     gap: spacing.md,
+    paddingRight: spacing.gutter,
+  },
+  recipeCardShell: {
+    width: 302,
   },
 });

@@ -1,18 +1,31 @@
 import { Tabs } from "expo-router";
 
 import { AppIcon } from "@/components/AppPrimitives";
-import { palette } from "@/constants/theme";
+import { palette, radius, shadow, spacing } from "@/constants/theme";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: palette.primary,
-        tabBarInactiveTintColor: palette.textMuted,
+        tabBarActiveTintColor: palette.inverse,
+        tabBarInactiveTintColor: "rgba(255, 255, 255, 0.68)",
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: "700",
+        },
         tabBarStyle: {
-          backgroundColor: "rgba(250, 249, 246, 0.96)",
-          borderTopColor: "rgba(187, 202, 191, 0.55)",
+          backgroundColor: palette.primary,
+          borderRadius: radius.full,
+          borderTopWidth: 0,
+          bottom: spacing.lg,
+          height: 64,
+          left: spacing.gutter,
+          paddingBottom: spacing.sm,
+          paddingTop: spacing.sm,
+          position: "absolute",
+          right: spacing.gutter,
+          ...(shadow.float ?? {}),
         },
       }}
     >

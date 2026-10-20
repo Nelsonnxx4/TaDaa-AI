@@ -109,7 +109,7 @@ export function PantryScreen() {
           <TextInput
             onChangeText={setQuery}
             placeholder="Search your pantry..."
-            placeholderTextColor="#6C7A71"
+            placeholderTextColor={palette.textMuted}
             style={styles.searchInput}
             value={query}
           />
@@ -124,7 +124,7 @@ export function PantryScreen() {
         ]}
       >
         <View style={styles.receiptIcon}>
-          <AppIcon color="#684000" name="receipt" size={24} />
+          <AppIcon color={palette.primary} name="receipt" size={24} />
         </View>
         <View style={styles.receiptCopy}>
           <Text style={styles.receiptTitle}>Auto-add from receipt</Text>
@@ -258,7 +258,7 @@ function PantryItemCard({ item }: { item: PantryItem }) {
           ]}
         >
           <AppIcon
-            color={item.expiresInDays <= 3 ? palette.inverse : "#684000"}
+            color={item.expiresInDays <= 3 ? palette.inverse : palette.text}
             name="warning"
             size={12}
           />
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: 128,
     paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.md,
+    paddingTop: spacing.lg,
   },
   searchPanel: {
     padding: spacing.sm,
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   searchInputRow: {
     alignItems: "center",
     backgroundColor: palette.surfaceLow,
-    borderRadius: radius.md,
+    borderRadius: radius.full,
     flexDirection: "row",
     gap: spacing.sm,
     minHeight: 52,
@@ -358,10 +358,10 @@ const styles = StyleSheet.create({
   },
   receiptBanner: {
     alignItems: "center",
-    backgroundColor: palette.amberSoft,
-    borderColor: "rgba(245, 158, 11, 0.28)",
-    borderRadius: radius.lg,
-    borderWidth: 1,
+    backgroundColor: palette.surfaceLow,
+    borderColor: "rgba(5, 5, 5, 0.05)",
+    borderRadius: radius.xl,
+    borderWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     gap: spacing.md,
     padding: spacing.md,
@@ -369,8 +369,8 @@ const styles = StyleSheet.create({
   },
   receiptIcon: {
     alignItems: "center",
-    backgroundColor: "#FFD88F",
-    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    borderRadius: radius.full,
     height: 48,
     justifyContent: "center",
     width: 48,
@@ -397,6 +397,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   pantryItemCard: {
+    backgroundColor: palette.surfaceLow,
     flexBasis: "47%",
     flexGrow: 1,
     minWidth: 150,
@@ -405,8 +406,8 @@ const styles = StyleSheet.create({
   },
   pantryImage: {
     aspectRatio: 1,
-    backgroundColor: palette.surfaceMuted,
-    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    borderRadius: radius.xl,
     marginBottom: spacing.sm,
     width: "100%",
   },
@@ -421,7 +422,7 @@ const styles = StyleSheet.create({
   },
   expiryBadge: {
     alignItems: "center",
-    backgroundColor: palette.amberSoft,
+    backgroundColor: palette.surface,
     borderRadius: radius.full,
     flexDirection: "row",
     gap: spacing.xs,
@@ -437,14 +438,14 @@ const styles = StyleSheet.create({
   },
   expiryText: {
     ...typography.label,
-    color: "#684000",
+    color: palette.text,
   },
   expiryTextSoon: {
     color: palette.inverse,
   },
   addItemCard: {
     alignItems: "center",
-    backgroundColor: palette.surface,
+    backgroundColor: palette.surfaceLow,
     borderColor: palette.outline,
     borderRadius: radius.lg,
     borderStyle: "dashed",
@@ -472,6 +473,7 @@ const styles = StyleSheet.create({
   },
   profileHero: {
     alignItems: "center",
+    backgroundColor: palette.surfaceLow,
     flexDirection: "row",
     gap: spacing.md,
   },
@@ -489,7 +491,7 @@ const styles = StyleSheet.create({
   },
   profileName: {
     ...typography.headline,
-    color: palette.primary,
+    color: palette.text,
   },
   profileMeta: {
     ...typography.bodySmall,
@@ -501,9 +503,9 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   profileAction: {
-    backgroundColor: palette.surface,
-    borderColor: "rgba(187, 202, 191, 0.45)",
-    borderRadius: radius.lg,
+    backgroundColor: palette.surfaceLow,
+    borderColor: "rgba(5, 5, 5, 0.05)",
+    borderRadius: radius.xl,
     borderWidth: StyleSheet.hairlineWidth,
     flexBasis: "47%",
     flexGrow: 1,
@@ -518,8 +520,8 @@ const styles = StyleSheet.create({
   },
   profileActionIcon: {
     alignItems: "center",
-    backgroundColor: palette.primarySoft,
-    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    borderRadius: radius.full,
     height: 44,
     justifyContent: "center",
     width: 44,
@@ -544,7 +546,7 @@ const styles = StyleSheet.create({
   },
   preferenceRow: {
     alignItems: "center",
-    borderTopColor: "rgba(187, 202, 191, 0.48)",
+    borderTopColor: "rgba(5, 5, 5, 0.08)",
     borderTopWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -556,7 +558,7 @@ const styles = StyleSheet.create({
   },
   preferenceValue: {
     ...typography.bodySmall,
-    color: palette.primary,
+    color: palette.text,
     fontWeight: "800",
   },
   pressed: {

@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
 	},
 	card: {
 		backgroundColor: palette.surface,
-		borderColor: "rgba(187, 202, 191, 0.45)",
+		borderColor: "rgba(5, 5, 5, 0.05)",
 		borderRadius: radius.xl,
 		borderWidth: StyleSheet.hairlineWidth,
 		gap: spacing.lg,
@@ -234,9 +234,9 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		...typography.body,
-		backgroundColor: palette.surface,
+		backgroundColor: palette.surfaceLow,
 		borderColor: palette.outline,
-		borderRadius: radius.md,
+		borderRadius: radius.lg,
 		borderWidth: StyleSheet.hairlineWidth,
 		color: palette.text,
 		minHeight: 52,
@@ -253,8 +253,8 @@ const styles = StyleSheet.create({
 	},
 	primaryAction: {
 		alignItems: "center",
-		backgroundColor: palette.primaryBright,
-		borderRadius: radius.sm,
+		backgroundColor: palette.primary,
+		borderRadius: radius.full,
 		justifyContent: "center",
 		minHeight: 48,
 		paddingHorizontal: spacing.lg,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
 	},
 	primaryActionText: {
 		...typography.bodySmall,
-		color: "#00422B",
+		color: palette.inverse,
 		fontWeight: "800",
 	},
 	primaryActionTextDisabled: {

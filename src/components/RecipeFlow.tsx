@@ -103,14 +103,14 @@ export function IngredientStoreScreen({
               onPress={() => setServings((value) => Math.max(1, value - 1))}
               style={styles.stepperButton}
             >
-              <AppIcon color={palette.primary} name="remove" size={18} />
+              <AppIcon color={palette.inverse} name="remove" size={18} />
             </Pressable>
             <Text style={styles.stepperText}>{servings}</Text>
             <Pressable
               onPress={() => setServings((value) => value + 1)}
               style={styles.stepperButton}
             >
-              <AppIcon color={palette.primary} name="add" size={18} />
+              <AppIcon color={palette.inverse} name="add" size={18} />
             </Pressable>
           </View>
         </View>
@@ -150,7 +150,7 @@ export function IngredientStoreScreen({
       <SurfaceCard style={styles.missingPanel}>
         <View style={styles.calloutHeader}>
           <View style={styles.calloutIcon}>
-            <AppIcon color="#684000" name="cart" size={22} />
+            <AppIcon color={palette.primary} name="cart" size={22} />
           </View>
           <View style={styles.calloutCopy}>
             <Text style={styles.calloutTitle}>Missing items</Text>
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: 128,
     paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.md,
+    paddingTop: spacing.lg,
   },
   screenHeader: {
     alignItems: "center",
@@ -397,25 +397,27 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     alignItems: "center",
-    backgroundColor: palette.primarySoft,
+    backgroundColor: palette.surface,
     borderRadius: radius.full,
     height: 42,
     justifyContent: "center",
     minWidth: 42,
     paddingHorizontal: spacing.sm,
+    ...(shadow.card ?? {}),
   },
   screenTitle: {
     ...typography.title,
     color: palette.text,
   },
   recipeHero: {
+    backgroundColor: palette.surfaceLow,
     gap: spacing.md,
     padding: spacing.sm,
   },
   recipeImage: {
     aspectRatio: 1.55,
-    backgroundColor: palette.surfaceMuted,
-    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    borderRadius: radius.xl,
     width: "100%",
   },
   recipeInfo: {
@@ -424,7 +426,7 @@ const styles = StyleSheet.create({
   },
   recipeName: {
     ...typography.headline,
-    color: palette.primary,
+    color: palette.text,
   },
   recipeSummary: {
     ...typography.bodySmall,
@@ -437,7 +439,7 @@ const styles = StyleSheet.create({
   },
   metric: {
     alignItems: "center",
-    backgroundColor: palette.primarySoft,
+    backgroundColor: palette.surface,
     borderRadius: radius.full,
     flexDirection: "row",
     gap: spacing.xs,
@@ -446,7 +448,7 @@ const styles = StyleSheet.create({
   },
   metricText: {
     ...typography.label,
-    color: palette.primary,
+    color: palette.textMuted,
   },
   servingStepper: {
     alignItems: "center",
@@ -459,7 +461,7 @@ const styles = StyleSheet.create({
   },
   stepperButton: {
     alignItems: "center",
-    backgroundColor: palette.surface,
+    backgroundColor: palette.primary,
     borderRadius: radius.full,
     height: 32,
     justifyContent: "center",
@@ -467,7 +469,7 @@ const styles = StyleSheet.create({
   },
   stepperText: {
     ...typography.body,
-    color: palette.primary,
+    color: palette.text,
     fontWeight: "700",
   },
   ingredientPanel: {
@@ -479,7 +481,7 @@ const styles = StyleSheet.create({
   ingredientRow: {
     alignItems: "center",
     backgroundColor: palette.surfaceLow,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     flexDirection: "row",
     gap: spacing.sm,
     minHeight: 62,
@@ -502,7 +504,7 @@ const styles = StyleSheet.create({
     color: palette.textMuted,
   },
   missingPanel: {
-    backgroundColor: palette.amberSoft,
+    backgroundColor: palette.surface,
   },
   calloutHeader: {
     alignItems: "center",
@@ -511,8 +513,8 @@ const styles = StyleSheet.create({
   },
   calloutIcon: {
     alignItems: "center",
-    backgroundColor: "#FFD88F",
-    borderRadius: radius.md,
+    backgroundColor: palette.primarySoft,
+    borderRadius: radius.full,
     height: 48,
     justifyContent: "center",
     width: 48,
@@ -523,12 +525,12 @@ const styles = StyleSheet.create({
   },
   calloutTitle: {
     ...typography.body,
-    color: "#684000",
+    color: palette.text,
     fontWeight: "800",
   },
   calloutBody: {
     ...typography.bodySmall,
-    color: "#684000",
+    color: palette.textMuted,
   },
   pantryAccordion: {
     gap: spacing.xs,
@@ -544,9 +546,9 @@ const styles = StyleSheet.create({
   },
   accordionCount: {
     ...typography.label,
-    backgroundColor: palette.primarySoft,
+    backgroundColor: palette.surfaceLow,
     borderRadius: radius.full,
-    color: palette.primary,
+    color: palette.text,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
@@ -558,8 +560,8 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   mapMock: {
-    backgroundColor: "#DCEEE4",
-    borderRadius: radius.lg,
+    backgroundColor: "#E9EEF3",
+    borderRadius: radius.xl,
     height: 220,
     overflow: "hidden",
   },
@@ -584,7 +586,7 @@ const styles = StyleSheet.create({
   },
   userPin: {
     alignItems: "center",
-    backgroundColor: palette.primaryBright,
+    backgroundColor: palette.primary,
     borderColor: palette.inverse,
     borderRadius: radius.full,
     borderWidth: 3,
@@ -623,8 +625,8 @@ const styles = StyleSheet.create({
     paddingRight: spacing.gutter,
   },
   storeCard: {
-    backgroundColor: palette.surfaceLow,
-    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    borderRadius: radius.xl,
     gap: spacing.sm,
     padding: spacing.md,
     width: 220,
@@ -640,7 +642,7 @@ const styles = StyleSheet.create({
   },
   storeMeta: {
     ...typography.label,
-    color: palette.primary,
+    color: palette.textMuted,
   },
   storeAvailable: {
     ...typography.bodySmall,
@@ -651,7 +653,7 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: 128,
     paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.md,
+    paddingTop: spacing.lg,
   },
   progressText: {
     ...typography.label,
@@ -664,7 +666,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   cookingProgressFill: {
-    backgroundColor: palette.primaryBright,
+    backgroundColor: palette.primary,
     borderRadius: radius.full,
     height: "100%",
   },
@@ -680,7 +682,7 @@ const styles = StyleSheet.create({
   },
   currentStepTitle: {
     ...typography.display,
-    color: palette.primary,
+    color: palette.text,
   },
   currentStepBody: {
     ...typography.body,
@@ -713,8 +715,8 @@ const styles = StyleSheet.create({
   voiceBar: {
     alignItems: "center",
     backgroundColor: palette.surface,
-    borderColor: "rgba(187, 202, 191, 0.55)",
-    borderRadius: radius.lg,
+    borderColor: "rgba(5, 5, 5, 0.06)",
+    borderRadius: radius.xl,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     gap: spacing.md,
@@ -728,7 +730,7 @@ const styles = StyleSheet.create({
     height: 42,
   },
   voiceWaveBar: {
-    backgroundColor: palette.primaryBright,
+    backgroundColor: palette.primary,
     borderRadius: radius.full,
     width: 5,
   },

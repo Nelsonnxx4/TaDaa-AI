@@ -12,6 +12,8 @@ export const palette = {
   amberSoft: "#FFF1D6",
   red: "#A43A3A",
   redSoft: "#FFE2DF",
+  green: "#10B981",
+  greenSoft: "#DDF8EA",
   text: "#1A1C1A",
   textMuted: "#3C4A42",
   outline: "#BBCABF",
@@ -75,19 +77,19 @@ export const shadow = {
 
 export const typography = {
   display: {
-    fontSize: 32,
-    lineHeight: 40,
-    fontWeight: "800" as const,
+    fontSize: 46,
+    lineHeight: 52,
+    fontWeight: "900" as const,
   },
   headline: {
-    fontSize: 24,
-    lineHeight: 32,
-    fontWeight: "700" as const,
+    fontSize: 30,
+    lineHeight: 36,
+    fontWeight: "800" as const,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     lineHeight: 28,
-    fontWeight: "700" as const,
+    fontWeight: "800" as const,
   },
   body: {
     fontSize: 16,
@@ -95,13 +97,13 @@ export const typography = {
     fontWeight: "400" as const,
   },
   bodySmall: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
     fontWeight: "400" as const,
   },
   label: {
-    fontSize: 12,
-    lineHeight: 16,
+    fontSize: 11,
+    lineHeight: 14,
     fontWeight: "700" as const,
   },
 };
