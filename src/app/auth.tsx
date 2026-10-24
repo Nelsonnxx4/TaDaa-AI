@@ -1,4 +1,4 @@
-import { Image } from "expo-image";
+import { Image } from "@/components/StyledImage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -7,7 +7,6 @@ import {
 	Pressable,
 	SafeAreaView,
 	ScrollView,
-	StyleSheet,
 	Text,
 	TextInput,
 	View,
@@ -15,13 +14,7 @@ import {
 } from "react-native";
 
 import { AppIcon } from "@/components/AppPrimitives";
-import {
-	palette,
-	radius,
-	shadow,
-	spacing,
-	typography,
-} from "@/constants/theme";
+import { palette, spacing } from "@/constants/theme";
 import { heroImage } from "@/data/mock";
 
 type AuthMode = "sign-in" | "sign-up";
@@ -51,36 +44,36 @@ export default function AuthRoute() {
 	};
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
+		<SafeAreaView className="flex-1 bg-onboardingBg">
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
-				style={styles.keyboardShell}
+				className="flex-1"
 			>
 				<ScrollView
-					contentContainerStyle={styles.scrollContent}
+					contentContainerClassName="flex-grow justify-center px-5 py-8"
 					keyboardShouldPersistTaps="handled"
 					showsVerticalScrollIndicator={false}
 				>
-					<View style={[styles.content, { width: contentWidth }]}>
-						<View style={styles.heroCard}>
+					<View className="gap-8 self-center" style={{ width: contentWidth }}>
+						<View className="h-[208px] overflow-hidden rounded-3xl bg-surface shadow-sm">
 							<Image
 								contentFit="cover"
 								source={{ uri: heroImage }}
-								style={StyleSheet.absoluteFill}
+								className="absolute inset-0"
 							/>
-							<View style={styles.heroScrim} />
-							<View style={styles.heroCopy}>
-								<Text style={styles.logo}>Ta-Daa AI</Text>
-								<Text style={styles.tagline}>Snap, Shop & Cook</Text>
+							<View className="absolute inset-0 bg-[rgba(245,245,245,0.24)]" />
+							<View className="absolute bottom-0 left-0 right-0 items-center gap-1 bg-overlay-soft p-4">
+								<Text className="text-center text-display text-text">Ta-Daa AI</Text>
+								<Text className="text-center text-body-sm text-textMuted">Snap, Shop & Cook</Text>
 							</View>
 						</View>
 
-						<View style={styles.authCard}>
-							<Text style={styles.heading}>
+						<View className="gap-6 rounded-3xl border border-[rgba(5,5,5,0.05)] bg-surface p-6 shadow-sm">
+							<Text className="text-center text-headline text-text">
 								{isSignUp ? "Create Account" : "Welcome Back"}
 							</Text>
 
-							<View style={styles.form}>
+							<View className="gap-4">
 								{isSignUp ? (
 									<TextInput
 										autoCapitalize="words"
@@ -88,7 +81,7 @@ export default function AuthRoute() {
 										placeholder="Full Name"
 										placeholderTextColor={palette.textMuted}
 										returnKeyType="next"
-										style={styles.input}
+										className="min-h-[52px] rounded-2xl border border-outline bg-surface-low px-4 py-2 text-body text-text"
 										textContentType="name"
 										value={name}
 									/>
@@ -101,7 +94,7 @@ export default function AuthRoute() {
 									placeholder="Email Address"
 									placeholderTextColor={palette.textMuted}
 									returnKeyType="next"
-									style={styles.input}
+									className="min-h-[52px] rounded-2xl border border-outline bg-surface-low px-4 py-2 text-body text-text"
 									textContentType="emailAddress"
 									value={email}
 								/>
@@ -113,7 +106,7 @@ export default function AuthRoute() {
 										placeholderTextColor={palette.textMuted}
 										returnKeyType="done"
 										secureTextEntry
-										style={styles.input}
+										className="min-h-[52px] rounded-2xl border border-outline bg-surface-low px-4 py-2 text-body text-text"
 										textContentType={isSignUp ? "newPassword" : "password"}
 										value={password}
 									/>
@@ -121,33 +114,30 @@ export default function AuthRoute() {
 										<Pressable
 											accessibilityRole="button"
 											onPress={() => router.push("/forgot-password")}
-											style={styles.forgotButton}
+											className="self-end pt-1"
 										>
-											<Text style={styles.forgotText}>Forgot Password?</Text>
+											<Text className="text-label text-accent200">Forgot Password?</Text>
 										</Pressable>
 									) : null}
 								</View>
 
 								<Pressable
 									onPress={continueToApp}
-									style={({ pressed }) => [
-										styles.primaryAction,
-										pressed && styles.pressed,
-									]}
+									className="min-h-12 items-center justify-center rounded-full bg-accent200 px-6 shadow-sm active:scale-[0.98] active:opacity-[0.86]"
 								>
-									<Text style={styles.primaryActionText}>
+									<Text className="text-body-sm font-extrabold text-inverse">
 										{isSignUp ? "Sign Up" : "Sign In"}
 									</Text>
 								</Pressable>
 							</View>
 
-							<View style={styles.dividerRow}>
-								<View style={styles.dividerLine} />
-								<Text style={styles.dividerText}>Or continue with</Text>
-								<View style={styles.dividerLine} />
+							<View className="flex-row items-center gap-2">
+								<View className="h-px flex-1 bg-surface-muted" />
+								<Text className="text-body-sm text-textMuted">Or continue with</Text>
+								<View className="h-px flex-1 bg-surface-muted" />
 							</View>
 
-							<View style={styles.socialStack}>
+							<View className="gap-2">
 								<SocialButton
 									icon="logo-google"
 									label="Continue with Google"
@@ -162,17 +152,17 @@ export default function AuthRoute() {
 							</View>
 						</View>
 
-						<View style={styles.switchRow}>
-							<Text style={styles.switchText}>
+						<View className="flex-row flex-wrap items-center justify-center gap-1 pb-6">
+							<Text className="text-body-sm text-textMuted">
 								{isSignUp
 									? "Already have an account?"
 									: "Don't have an account?"}
 							</Text>
 							<Pressable
 								onPress={() => setMode(isSignUp ? "sign-in" : "sign-up")}
-								style={styles.switchButton}
+								className="p-1"
 							>
-								<Text style={styles.switchButtonText}>
+								<Text className="text-body-sm font-extrabold text-accent200">
 									{isSignUp ? "Sign In" : "Sign Up"}
 								</Text>
 							</Pressable>
@@ -198,11 +188,9 @@ function SocialButton({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={({ pressed }) => [
-				styles.socialButton,
-				dark && styles.socialButtonDark,
-				pressed && styles.pressed,
-			]}
+			className={`min-h-12 flex-row items-center justify-center gap-2 rounded-full border px-6 active:scale-[0.98] active:opacity-[0.86] ${
+				dark ? "border-text bg-text" : "border-outline bg-surface"
+			}`}
 		>
 			{icon === "logo-google" ? (
 				<GoogleBrandIcon size={18} />
@@ -213,7 +201,7 @@ function SocialButton({
 					size={18}
 				/>
 			)}
-			<Text style={[styles.socialText, dark && styles.socialTextDark]}>
+			<Text className={`text-body-sm font-extrabold ${dark ? "text-surface" : "text-text"}`}>
 				{label}
 			</Text>
 		</Pressable>
@@ -230,173 +218,3 @@ function GoogleBrandIcon({ size }: { size: number }) {
 		/>
 	);
 }
-
-const styles = StyleSheet.create({
-	safeArea: {
-		backgroundColor: palette.background,
-		flex: 1,
-	},
-	keyboardShell: {
-		flex: 1,
-	},
-	scrollContent: {
-		flexGrow: 1,
-		justifyContent: "center",
-		paddingHorizontal: spacing.gutter,
-		paddingVertical: spacing.xl,
-	},
-	content: {
-		alignSelf: "center",
-		gap: spacing.xl,
-	},
-	heroCard: {
-		backgroundColor: palette.surface,
-		borderRadius: radius.xl,
-		height: 208,
-		overflow: "hidden",
-		...(shadow.card ?? {}),
-	},
-	heroScrim: {
-		backgroundColor: "rgba(245, 245, 245, 0.24)",
-		bottom: 0,
-		left: 0,
-		position: "absolute",
-		right: 0,
-		top: 0,
-	},
-	heroCopy: {
-		alignItems: "center",
-		backgroundColor: "rgba(255, 255, 255, 0.78)",
-		bottom: 0,
-		gap: spacing.xs,
-		left: 0,
-		padding: spacing.md,
-		position: "absolute",
-		right: 0,
-	},
-	logo: {
-		...typography.display,
-		color: palette.text,
-		textAlign: "center",
-	},
-	tagline: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-		textAlign: "center",
-	},
-	authCard: {
-		backgroundColor: palette.surface,
-		borderColor: "rgba(5, 5, 5, 0.05)",
-		borderRadius: radius.xl,
-		borderWidth: StyleSheet.hairlineWidth,
-		gap: spacing.lg,
-		padding: spacing.lg,
-		...(shadow.card ?? {}),
-	},
-	heading: {
-		...typography.headline,
-		color: palette.text,
-		textAlign: "center",
-	},
-	form: {
-		gap: spacing.md,
-	},
-	input: {
-		...typography.body,
-		backgroundColor: palette.surfaceLow,
-		borderColor: palette.outline,
-		borderRadius: radius.lg,
-		borderWidth: StyleSheet.hairlineWidth,
-		color: palette.text,
-		minHeight: 52,
-		paddingHorizontal: spacing.md,
-		paddingVertical: spacing.sm,
-	},
-	forgotButton: {
-		alignSelf: "flex-end",
-		paddingTop: spacing.xs,
-	},
-	forgotText: {
-		...typography.label,
-		color: palette.primary,
-	},
-	primaryAction: {
-		alignItems: "center",
-		backgroundColor: palette.primary,
-		borderRadius: radius.full,
-		justifyContent: "center",
-		minHeight: 48,
-		paddingHorizontal: spacing.lg,
-		...(shadow.card ?? {}),
-	},
-	primaryActionText: {
-		...typography.bodySmall,
-		color: palette.inverse,
-		fontWeight: "800",
-	},
-	dividerRow: {
-		alignItems: "center",
-		flexDirection: "row",
-		gap: spacing.sm,
-	},
-	dividerLine: {
-		backgroundColor: palette.surfaceMuted,
-		flex: 1,
-		height: StyleSheet.hairlineWidth,
-	},
-	dividerText: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-	},
-	socialStack: {
-		gap: spacing.sm,
-	},
-	socialButton: {
-		alignItems: "center",
-		backgroundColor: palette.surface,
-		borderColor: palette.outline,
-		borderRadius: radius.full,
-		borderWidth: StyleSheet.hairlineWidth,
-		flexDirection: "row",
-		gap: spacing.sm,
-		justifyContent: "center",
-		minHeight: 48,
-		paddingHorizontal: spacing.lg,
-	},
-	socialButtonDark: {
-		backgroundColor: palette.text,
-		borderColor: palette.text,
-	},
-	socialText: {
-		...typography.bodySmall,
-		color: palette.text,
-		fontWeight: "800",
-	},
-	socialTextDark: {
-		color: palette.surface,
-	},
-	switchRow: {
-		alignItems: "center",
-		flexDirection: "row",
-		flexWrap: "wrap",
-		gap: spacing.xs,
-		justifyContent: "center",
-		paddingBottom: spacing.lg,
-	},
-	switchText: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-	},
-	switchButton: {
-		padding: spacing.xs,
-	},
-	switchButtonText: {
-		...typography.bodySmall,
-		color: palette.primary,
-		fontWeight: "800",
-	},
-	pressed: {
-		opacity: 0.86,
-		transform: [{ scale: 0.98 }],
-	},
-});

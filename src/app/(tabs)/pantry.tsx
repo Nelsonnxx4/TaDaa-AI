@@ -1,19 +1,11 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native";
 
 import { PantryScreen } from "@/components/PantryProfile";
-import { palette } from "@/constants/theme";
 
 export default function PantryRoute() {
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView className="flex-1 bg-onboardingBg">
       <PantryScreen />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: palette.background,
-    flex: 1,
-  },
-});

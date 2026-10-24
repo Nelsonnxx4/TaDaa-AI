@@ -1,4 +1,4 @@
-import { Image } from "expo-image";
+import { Image } from "@/components/StyledImage";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
@@ -7,7 +7,6 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -23,7 +22,7 @@ import {
   SurfaceCard,
 } from "@/components/AppPrimitives";
 import { heroImage, inspirationChips, recipes } from "@/data/mock";
-import { palette, radius, shadow, spacing, typography } from "@/constants/theme";
+import { palette } from "@/constants/theme";
 import type { Recipe } from "@/types/app";
 import { getRecipeForQuery } from "@/utils/recipes";
 
@@ -56,10 +55,10 @@ export default function HomeRoute() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView className="flex-1 bg-onboardingBg">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={styles.appShell}
+        className="flex-1 bg-onboardingBg"
       >
         <HomeScreen
           onRecipeSelect={openRecipe}
@@ -102,14 +101,14 @@ function HomeScreen({
 
   return (
     <ScrollView
-      contentContainerStyle={styles.scrollContent}
+      contentContainerClassName="gap-6 px-5 pb-32 pt-6"
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
       <HeaderBar subtitle="Recent food plans" title="History" />
 
-      <SurfaceCard style={styles.searchPanel}>
-        <View style={styles.searchInputRow}>
+      <SurfaceCard className="gap-4 p-2">
+        <View className="min-h-[52px] flex-row items-center gap-2 rounded-full bg-surface-low px-4">
           <AppIcon color={palette.textMuted} name="search" size={22} />
           <TextInput
             onChangeText={setQuery}
@@ -117,7 +116,7 @@ function HomeScreen({
             placeholder="What do you want to eat today?"
             placeholderTextColor={palette.textMuted}
             returnKeyType="search"
-            style={styles.searchInput}
+            className="min-w-0 flex-1 py-2 text-body text-text"
             value={query}
           />
         </View>
@@ -130,32 +129,29 @@ function HomeScreen({
 
       <Pressable
         onPress={onSnap}
-        style={({ pressed }) => [
-          styles.snapBanner,
-          pressed && styles.pressedBanner,
-        ]}
+        className="min-h-[134px] flex-row items-center justify-between gap-4 overflow-hidden rounded-3xl bg-surface-low p-4 shadow-sm active:opacity-90"
       >
-        <View style={styles.snapProduct}>
+        <View className="h-24 w-24 items-center justify-center overflow-hidden rounded-3xl bg-surface">
           <Image
             contentFit="cover"
             source={{ uri: heroImage }}
-            style={styles.snapImage}
+            className="h-full w-full"
           />
         </View>
-        <View style={styles.snapCopy}>
-          <Text style={styles.snapTitle}>Snap Your Food</Text>
-          <Text style={styles.snapBody}>
+        <View className="min-w-0 flex-1 gap-1">
+          <Text className="text-title text-text">Snap Your Food</Text>
+          <Text className="text-body-sm text-textMuted">
             Turn a dish photo into ingredients, stores, and cooking steps.
           </Text>
         </View>
-        <View style={styles.snapButton}>
+        <View className="h-[46px] w-[46px] items-center justify-center rounded-full bg-accent200 shadow-md">
           <AppIcon color={palette.inverse} name="camera" size={21} />
         </View>
       </Pressable>
 
       <View>
         <ScrollView
-          contentContainerStyle={styles.chipRow}
+          contentContainerClassName="gap-2 pr-5"
           horizontal
           showsHorizontalScrollIndicator={false}
         >
@@ -173,13 +169,13 @@ function HomeScreen({
       <View>
         <SectionHeader action="Saved 8" title="Recent items" />
         <ScrollView
-          contentContainerStyle={styles.recipeRail}
+          contentContainerClassName="flex-row gap-4 pr-5"
           horizontal
           nestedScrollEnabled
           showsHorizontalScrollIndicator={false}
         >
           {visibleRecipes.map((recipe) => (
-            <View key={recipe.id} style={styles.recipeCardShell}>
+            <View key={recipe.id} className="w-[302px]">
               <FoodCard
                 onPress={() => onRecipeSelect(recipe)}
                 recipe={recipe}
@@ -191,103 +187,3 @@ function HomeScreen({
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: palette.background,
-    flex: 1,
-  },
-  appShell: {
-    backgroundColor: palette.background,
-    flex: 1,
-  },
-  scrollContent: {
-    gap: spacing.lg,
-    paddingBottom: 128,
-    paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.lg,
-  },
-  searchPanel: {
-    backgroundColor: palette.surface,
-    gap: spacing.md,
-    padding: spacing.sm,
-  },
-  searchInputRow: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    borderRadius: radius.full,
-    flexDirection: "row",
-    gap: spacing.sm,
-    minHeight: 52,
-    paddingHorizontal: spacing.md,
-  },
-  searchInput: {
-    ...typography.body,
-    color: palette.text,
-    flex: 1,
-    minWidth: 0,
-    paddingVertical: spacing.sm,
-  },
-  snapBanner: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    borderRadius: radius.xl,
-    flexDirection: "row",
-    gap: spacing.md,
-    justifyContent: "space-between",
-    minHeight: 134,
-    overflow: "hidden",
-    padding: spacing.md,
-    ...(shadow.card ?? {}),
-  },
-  pressedBanner: {
-    opacity: 0.9,
-  },
-  snapProduct: {
-    alignItems: "center",
-    backgroundColor: palette.surface,
-    borderRadius: radius.xl,
-    height: 96,
-    justifyContent: "center",
-    overflow: "hidden",
-    width: 96,
-  },
-  snapImage: {
-    height: "100%",
-    width: "100%",
-  },
-  snapCopy: {
-    flex: 1,
-    gap: spacing.xs,
-    minWidth: 0,
-  },
-  snapTitle: {
-    ...typography.title,
-    color: palette.text,
-  },
-  snapBody: {
-    ...typography.bodySmall,
-    color: palette.textMuted,
-  },
-  snapButton: {
-    alignItems: "center",
-    backgroundColor: palette.primary,
-    borderRadius: radius.full,
-    height: 46,
-    justifyContent: "center",
-    width: 46,
-    ...(shadow.float ?? {}),
-  },
-  chipRow: {
-    gap: spacing.sm,
-    paddingRight: spacing.gutter,
-  },
-  recipeRail: {
-    flexDirection: "row",
-    gap: spacing.md,
-    paddingRight: spacing.gutter,
-  },
-  recipeCardShell: {
-    width: 302,
-  },
-});

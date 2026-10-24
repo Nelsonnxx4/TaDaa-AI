@@ -5,7 +5,6 @@ import {
 	Pressable,
 	SafeAreaView,
 	ScrollView,
-	StyleSheet,
 	Text,
 	TextInput,
 	View,
@@ -14,13 +13,7 @@ import {
 import type { TextInputProps } from "react-native";
 
 import { AppIcon } from "@/components/AppPrimitives";
-import {
-	palette,
-	radius,
-	shadow,
-	spacing,
-	typography,
-} from "@/constants/theme";
+import { palette, spacing } from "@/constants/theme";
 
 type IconName = ComponentProps<typeof AppIcon>["name"];
 
@@ -52,62 +45,52 @@ export function PasswordResetScaffold({
 	const contentWidth = Math.min(Math.max(width - spacing.gutter * 2, 280), 420);
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
+		<SafeAreaView className="flex-1 bg-onboardingBg">
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
-				style={styles.keyboardShell}
+				className="flex-1"
 			>
 				<ScrollView
-					contentContainerStyle={styles.scrollContent}
+					contentContainerClassName="flex-grow justify-center px-5 py-8"
 					keyboardShouldPersistTaps="handled"
 					showsVerticalScrollIndicator={false}
 				>
-					<View style={[styles.content, { width: contentWidth }]}>
+					<View className="gap-4 self-center" style={{ width: contentWidth }}>
 						<Pressable
 							accessibilityLabel="Go back"
 							accessibilityRole="button"
 							onPress={onBack}
-							style={({ pressed }) => [
-								styles.backButton,
-								pressed && styles.pressed,
-							]}
+							className="h-11 w-11 items-center justify-center self-start rounded-full bg-primarySoft active:scale-[0.98] active:opacity-[0.86]"
 						>
 							<AppIcon color={palette.primary} name="chevron-back" size={22} />
 						</Pressable>
 
-						<View style={styles.card}>
-							<View style={styles.iconBubble}>
+						<View className="gap-6 rounded-3xl border border-[rgba(5,5,5,0.05)] bg-surface p-6 shadow-sm">
+							<View className="h-[68px] w-[68px] items-center justify-center self-center rounded-full bg-primarySoft">
 								<AppIcon color={palette.primary} name={icon} size={30} />
 							</View>
-							<Text style={styles.stepLabel}>{stepLabel}</Text>
-							<View style={styles.copyStack}>
-								<Text style={styles.heading}>{title}</Text>
-								<Text style={styles.subtitle}>{subtitle}</Text>
+							<Text className="text-center text-label text-accent200">{stepLabel}</Text>
+							<View className="gap-1">
+								<Text className="text-center text-headline text-text">{title}</Text>
+								<Text className="text-center text-body-sm text-textMuted">{subtitle}</Text>
 							</View>
 
-							<View style={styles.form}>{children}</View>
+							<View className="gap-4">{children}</View>
 
 							<Pressable
 								accessibilityRole="button"
 								disabled={primaryDisabled}
 								onPress={onPrimaryPress}
-								style={({ pressed }) => [
-									styles.primaryAction,
-									primaryDisabled && styles.primaryActionDisabled,
-									pressed && !primaryDisabled && styles.pressed,
-								]}
+								className={`min-h-12 items-center justify-center rounded-full px-6 shadow-sm ${
+									primaryDisabled ? "bg-surface-muted" : "bg-accent200 active:scale-[0.98] active:opacity-[0.86]"
+								}`}
 							>
-								<Text
-									style={[
-										styles.primaryActionText,
-										primaryDisabled && styles.primaryActionTextDisabled,
-									]}
-								>
+								<Text className={`text-body-sm font-extrabold ${primaryDisabled ? "text-textMuted" : "text-inverse"}`}>
 									{primaryLabel}
 								</Text>
 							</Pressable>
 
-							{footer ? <View style={styles.footer}>{footer}</View> : null}
+							{footer ? <View className="items-center gap-1">{footer}</View> : null}
 						</View>
 					</View>
 				</ScrollView>
@@ -124,7 +107,8 @@ export function PasswordResetInput({
 	return (
 		<TextInput
 			placeholderTextColor={placeholderTextColor}
-			style={[styles.input, style]}
+			className="min-h-[52px] rounded-2xl border border-outline bg-surface-low px-4 py-2 text-body text-text"
+			style={style}
 			{...props}
 		/>
 	);
@@ -142,7 +126,7 @@ export function PasswordResetInlineMessage({
 	}
 
 	return (
-		<Text style={[styles.inlineMessage, tone === "error" && styles.errorText]}>
+		<Text className={`text-center text-body-sm ${tone === "error" ? "text-red" : "text-textMuted"}`}>
 			{children}
 		</Text>
 	);
@@ -159,134 +143,9 @@ export function PasswordResetTextButton({
 		<Pressable
 			accessibilityRole="button"
 			onPress={onPress}
-			style={({ pressed }) => [styles.textButton, pressed && styles.pressed]}
+			className="px-2 py-1 active:scale-[0.98] active:opacity-[0.86]"
 		>
-			<Text style={styles.textButtonLabel}>{label}</Text>
+			<Text className="text-center text-body-sm font-extrabold text-accent200">{label}</Text>
 		</Pressable>
 	);
 }
-
-const styles = StyleSheet.create({
-	safeArea: {
-		backgroundColor: palette.background,
-		flex: 1,
-	},
-	keyboardShell: {
-		flex: 1,
-	},
-	scrollContent: {
-		flexGrow: 1,
-		justifyContent: "center",
-		paddingHorizontal: spacing.gutter,
-		paddingVertical: spacing.xl,
-	},
-	content: {
-		alignSelf: "center",
-		gap: spacing.md,
-	},
-	backButton: {
-		alignItems: "center",
-		alignSelf: "flex-start",
-		backgroundColor: palette.primarySoft,
-		borderRadius: radius.full,
-		height: 44,
-		justifyContent: "center",
-		width: 44,
-	},
-	card: {
-		backgroundColor: palette.surface,
-		borderColor: "rgba(5, 5, 5, 0.05)",
-		borderRadius: radius.xl,
-		borderWidth: StyleSheet.hairlineWidth,
-		gap: spacing.lg,
-		padding: spacing.lg,
-		...(shadow.card ?? {}),
-	},
-	iconBubble: {
-		alignItems: "center",
-		alignSelf: "center",
-		backgroundColor: palette.primarySoft,
-		borderRadius: radius.full,
-		height: 68,
-		justifyContent: "center",
-		width: 68,
-	},
-	stepLabel: {
-		...typography.label,
-		color: palette.primary,
-		textAlign: "center",
-	},
-	copyStack: {
-		gap: spacing.xs,
-	},
-	heading: {
-		...typography.headline,
-		color: palette.text,
-		textAlign: "center",
-	},
-	subtitle: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-		textAlign: "center",
-	},
-	form: {
-		gap: spacing.md,
-	},
-	input: {
-		...typography.body,
-		backgroundColor: palette.surfaceLow,
-		borderColor: palette.outline,
-		borderRadius: radius.lg,
-		borderWidth: StyleSheet.hairlineWidth,
-		color: palette.text,
-		minHeight: 52,
-		paddingHorizontal: spacing.md,
-		paddingVertical: spacing.sm,
-	},
-	inlineMessage: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-		textAlign: "center",
-	},
-	errorText: {
-		color: palette.red,
-	},
-	primaryAction: {
-		alignItems: "center",
-		backgroundColor: palette.primary,
-		borderRadius: radius.full,
-		justifyContent: "center",
-		minHeight: 48,
-		paddingHorizontal: spacing.lg,
-		...(shadow.card ?? {}),
-	},
-	primaryActionDisabled: {
-		backgroundColor: palette.surfaceMuted,
-	},
-	primaryActionText: {
-		...typography.bodySmall,
-		color: palette.inverse,
-		fontWeight: "800",
-	},
-	primaryActionTextDisabled: {
-		color: palette.textMuted,
-	},
-	footer: {
-		alignItems: "center",
-		gap: spacing.xs,
-	},
-	textButton: {
-		paddingHorizontal: spacing.sm,
-		paddingVertical: spacing.xs,
-	},
-	textButtonLabel: {
-		...typography.bodySmall,
-		color: palette.primary,
-		fontWeight: "800",
-		textAlign: "center",
-	},
-	pressed: {
-		opacity: 0.86,
-		transform: [{ scale: 0.98 }],
-	},
-});

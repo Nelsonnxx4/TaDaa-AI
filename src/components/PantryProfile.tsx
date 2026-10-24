@@ -1,9 +1,8 @@
-import { Image } from "expo-image";
+import { Image } from "@/components/StyledImage";
 import { useMemo, useState } from "react";
 import {
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -16,7 +15,7 @@ import {
   SectionHeader,
   SurfaceCard,
 } from "@/components/AppPrimitives";
-import { palette, radius, shadow, spacing, typography } from "@/constants/theme";
+import { palette } from "@/constants/theme";
 import { pantryItems, recipes } from "@/data/mock";
 import type { AppScreen, PantryItem } from "@/types/app";
 
@@ -97,20 +96,20 @@ export function PantryScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerClassName="gap-6 px-5 pb-32 pt-6"
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
       <HeaderBar subtitle={`${items.length} ingredients tracked`} title="My Pantry" />
 
-      <SurfaceCard style={styles.searchPanel}>
-        <View style={styles.searchInputRow}>
+      <SurfaceCard className="p-2">
+        <View className="min-h-[52px] flex-row items-center gap-2 rounded-full bg-surface-low px-4">
           <AppIcon color={palette.textMuted} name="search" size={22} />
           <TextInput
             onChangeText={setQuery}
             placeholder="Search your pantry..."
             placeholderTextColor={palette.textMuted}
-            style={styles.searchInput}
+            className="min-w-0 flex-1 text-body text-text"
             value={query}
           />
         </View>
@@ -118,23 +117,20 @@ export function PantryScreen() {
 
       <Pressable
         onPress={addReceiptItems}
-        style={({ pressed }) => [
-          styles.receiptBanner,
-          pressed && styles.pressed,
-        ]}
+        className="flex-row items-center gap-4 rounded-3xl border border-[rgba(5,5,5,0.05)] bg-surface-low p-4 shadow-sm active:scale-[0.99] active:opacity-[0.84]"
       >
-        <View style={styles.receiptIcon}>
+        <View className="h-12 w-12 items-center justify-center rounded-full bg-surface">
           <AppIcon color={palette.primary} name="receipt" size={24} />
         </View>
-        <View style={styles.receiptCopy}>
-          <Text style={styles.receiptTitle}>Auto-add from receipt</Text>
-          <Text style={styles.receiptBody}>Snap a grocery receipt to stock pantry items.</Text>
+        <View className="flex-1">
+          <Text className="text-body font-extrabold text-text">Auto-add from receipt</Text>
+          <Text className="text-body-sm text-textMuted">Snap a grocery receipt to stock pantry items.</Text>
         </View>
         <AppIcon color={palette.textMuted} name="chevron-forward" size={22} />
       </Pressable>
 
       <ScrollView
-        contentContainerStyle={styles.chipRow}
+        contentContainerClassName="gap-2 pr-5"
         horizontal
         showsHorizontalScrollIndicator={false}
       >
@@ -150,21 +146,18 @@ export function PantryScreen() {
 
       <View>
         <SectionHeader action="Grid view" title="Recently Added" />
-        <View style={styles.pantryGrid}>
+        <View className="flex-row flex-wrap gap-4">
           {visibleItems.map((item) => (
             <PantryItemCard item={item} key={item.id} />
           ))}
           <Pressable
             onPress={addManualItem}
-            style={({ pressed }) => [
-              styles.addItemCard,
-              pressed && styles.pressed,
-            ]}
+            className="min-h-[210px] min-w-[150px] grow basis-[47%] items-center justify-center gap-2 rounded-2xl border border-dashed border-outline bg-surface-low p-4 active:scale-[0.99] active:opacity-[0.84]"
           >
-            <View style={styles.addIcon}>
+            <View className="h-14 w-14 items-center justify-center rounded-full bg-primarySoft">
               <AppIcon color={palette.primary} name="add" size={26} />
             </View>
-            <Text style={styles.addItemText}>Add Item</Text>
+            <Text className="text-body font-extrabold text-accent200">Add Item</Text>
           </Pressable>
         </View>
       </View>
@@ -179,22 +172,22 @@ export function ProfileScreen({
 }) {
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerClassName="gap-6 px-5 pb-32 pt-6"
       showsVerticalScrollIndicator={false}
     >
       <HeaderBar subtitle="Preferences and account" />
 
-      <SurfaceCard style={styles.profileHero}>
-        <View style={styles.profileAvatar}>
+      <SurfaceCard className="flex-row items-center gap-4 bg-surface-low">
+        <View className="h-[72px] w-[72px] items-center justify-center rounded-full bg-primarySoft">
           <AppIcon color={palette.primary} name="person" size={36} />
         </View>
-        <View style={styles.profileCopy}>
-          <Text style={styles.profileName}>Nelson</Text>
-          <Text style={styles.profileMeta}>Home cook</Text>
+        <View className="min-w-0 flex-1">
+          <Text className="text-headline text-text">Nelson</Text>
+          <Text className="text-body-sm text-textMuted">Home cook</Text>
         </View>
       </SurfaceCard>
 
-      <View style={styles.menuGrid}>
+      <View className="flex-row flex-wrap gap-4">
         <ProfileAction
           body="Diet, allergies, servings, and cuisine choices."
           icon="options"
@@ -228,19 +221,19 @@ export function ProfileScreen({
         />
       </View>
 
-      <SurfaceCard style={styles.preferencePanel}>
+      <SurfaceCard className="gap-2">
         <SectionHeader title="Cooking Profile" />
-        <View style={styles.preferenceRow}>
-          <Text style={styles.preferenceLabel}>Diet</Text>
-          <Text style={styles.preferenceValue}>Flexible</Text>
+        <View className="flex-row items-center justify-between border-t border-[rgba(5,5,5,0.08)] pt-2">
+          <Text className="text-body-sm text-textMuted">Diet</Text>
+          <Text className="text-body-sm font-extrabold text-text">Flexible</Text>
         </View>
-        <View style={styles.preferenceRow}>
-          <Text style={styles.preferenceLabel}>Default servings</Text>
-          <Text style={styles.preferenceValue}>2</Text>
+        <View className="flex-row items-center justify-between border-t border-[rgba(5,5,5,0.08)] pt-2">
+          <Text className="text-body-sm text-textMuted">Default servings</Text>
+          <Text className="text-body-sm font-extrabold text-text">2</Text>
         </View>
-        <View style={styles.preferenceRow}>
-          <Text style={styles.preferenceLabel}>Budget mode</Text>
-          <Text style={styles.preferenceValue}>Balanced</Text>
+        <View className="flex-row items-center justify-between border-t border-[rgba(5,5,5,0.08)] pt-2">
+          <Text className="text-body-sm text-textMuted">Budget mode</Text>
+          <Text className="text-body-sm font-extrabold text-text">Balanced</Text>
         </View>
       </SurfaceCard>
     </ScrollView>
@@ -249,25 +242,19 @@ export function ProfileScreen({
 
 function PantryItemCard({ item }: { item: PantryItem }) {
   return (
-    <SurfaceCard style={styles.pantryItemCard}>
+    <SurfaceCard className="relative min-w-[150px] grow basis-[47%] bg-surface-low p-2">
       {item.expiresInDays ? (
         <View
-          style={[
-            styles.expiryBadge,
-            item.expiresInDays <= 3 && styles.expiryBadgeSoon,
-          ]}
+          className={`absolute right-4 top-4 z-10 flex-row items-center gap-1 rounded-full px-2 py-1 ${
+            item.expiresInDays <= 3 ? "bg-red" : "bg-surface"
+          }`}
         >
           <AppIcon
             color={item.expiresInDays <= 3 ? palette.inverse : palette.text}
             name="warning"
             size={12}
           />
-          <Text
-            style={[
-              styles.expiryText,
-              item.expiresInDays <= 3 && styles.expiryTextSoon,
-            ]}
-          >
+          <Text className={`text-label ${item.expiresInDays <= 3 ? "text-inverse" : "text-text"}`}>
             {item.expiresInDays} days
           </Text>
         </View>
@@ -275,12 +262,12 @@ function PantryItemCard({ item }: { item: PantryItem }) {
       <Image
         contentFit="cover"
         source={{ uri: item.imageUrl }}
-        style={styles.pantryImage}
+        className="mb-2 aspect-square w-full rounded-3xl bg-surface"
       />
-      <Text numberOfLines={1} style={styles.pantryItemName}>
+      <Text className="text-body font-extrabold text-text" numberOfLines={1}>
         {item.name}
       </Text>
-      <Text style={styles.pantryItemQuantity}>{item.quantity}</Text>
+      <Text className="text-body-sm text-textMuted">{item.quantity}</Text>
     </SurfaceCard>
   );
 }
@@ -310,259 +297,21 @@ function ProfileAction({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.profileAction,
-        isDanger && styles.profileActionDanger,
-        pressed && styles.pressed,
-      ]}
+      className={`min-h-[156px] min-w-[150px] grow basis-[47%] gap-2 rounded-3xl border border-[rgba(5,5,5,0.05)] p-4 shadow-sm active:scale-[0.99] active:opacity-[0.84] ${
+        isDanger ? "bg-redSoft" : "bg-surface-low"
+      }`}
     >
-      <View style={[styles.profileActionIcon, isDanger && styles.dangerIcon]}>
+      <View className={`h-11 w-11 items-center justify-center rounded-full ${isDanger ? "bg-[rgba(164,58,58,0.12)]" : "bg-surface"}`}>
         <AppIcon
           color={isDanger ? palette.red : palette.primary}
           name={icon}
           size={24}
         />
       </View>
-      <Text style={[styles.profileActionTitle, isDanger && styles.dangerText]}>
+      <Text className={`text-body font-extrabold ${isDanger ? "text-red" : "text-text"}`}>
         {title}
       </Text>
-      <Text style={styles.profileActionBody}>{body}</Text>
+      <Text className="text-body-sm text-textMuted">{body}</Text>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  content: {
-    gap: spacing.lg,
-    paddingBottom: 128,
-    paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.lg,
-  },
-  searchPanel: {
-    padding: spacing.sm,
-  },
-  searchInputRow: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    borderRadius: radius.full,
-    flexDirection: "row",
-    gap: spacing.sm,
-    minHeight: 52,
-    paddingHorizontal: spacing.md,
-  },
-  searchInput: {
-    ...typography.body,
-    color: palette.text,
-    flex: 1,
-    minWidth: 0,
-  },
-  receiptBanner: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    borderColor: "rgba(5, 5, 5, 0.05)",
-    borderRadius: radius.xl,
-    borderWidth: StyleSheet.hairlineWidth,
-    flexDirection: "row",
-    gap: spacing.md,
-    padding: spacing.md,
-    ...(shadow.card ?? {}),
-  },
-  receiptIcon: {
-    alignItems: "center",
-    backgroundColor: palette.surface,
-    borderRadius: radius.full,
-    height: 48,
-    justifyContent: "center",
-    width: 48,
-  },
-  receiptCopy: {
-    flex: 1,
-  },
-  receiptTitle: {
-    ...typography.body,
-    color: palette.text,
-    fontWeight: "800",
-  },
-  receiptBody: {
-    ...typography.bodySmall,
-    color: palette.textMuted,
-  },
-  chipRow: {
-    gap: spacing.sm,
-    paddingRight: spacing.gutter,
-  },
-  pantryGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.md,
-  },
-  pantryItemCard: {
-    backgroundColor: palette.surfaceLow,
-    flexBasis: "47%",
-    flexGrow: 1,
-    minWidth: 150,
-    padding: spacing.sm,
-    position: "relative",
-  },
-  pantryImage: {
-    aspectRatio: 1,
-    backgroundColor: palette.surface,
-    borderRadius: radius.xl,
-    marginBottom: spacing.sm,
-    width: "100%",
-  },
-  pantryItemName: {
-    ...typography.body,
-    color: palette.text,
-    fontWeight: "800",
-  },
-  pantryItemQuantity: {
-    ...typography.bodySmall,
-    color: palette.textMuted,
-  },
-  expiryBadge: {
-    alignItems: "center",
-    backgroundColor: palette.surface,
-    borderRadius: radius.full,
-    flexDirection: "row",
-    gap: spacing.xs,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    position: "absolute",
-    right: spacing.md,
-    top: spacing.md,
-    zIndex: 2,
-  },
-  expiryBadgeSoon: {
-    backgroundColor: palette.red,
-  },
-  expiryText: {
-    ...typography.label,
-    color: palette.text,
-  },
-  expiryTextSoon: {
-    color: palette.inverse,
-  },
-  addItemCard: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    borderColor: palette.outline,
-    borderRadius: radius.lg,
-    borderStyle: "dashed",
-    borderWidth: 1,
-    flexBasis: "47%",
-    flexGrow: 1,
-    gap: spacing.sm,
-    justifyContent: "center",
-    minHeight: 210,
-    minWidth: 150,
-    padding: spacing.md,
-  },
-  addIcon: {
-    alignItems: "center",
-    backgroundColor: palette.primarySoft,
-    borderRadius: radius.full,
-    height: 56,
-    justifyContent: "center",
-    width: 56,
-  },
-  addItemText: {
-    ...typography.body,
-    color: palette.primary,
-    fontWeight: "800",
-  },
-  profileHero: {
-    alignItems: "center",
-    backgroundColor: palette.surfaceLow,
-    flexDirection: "row",
-    gap: spacing.md,
-  },
-  profileAvatar: {
-    alignItems: "center",
-    backgroundColor: palette.primarySoft,
-    borderRadius: radius.full,
-    height: 72,
-    justifyContent: "center",
-    width: 72,
-  },
-  profileCopy: {
-    flex: 1,
-    minWidth: 0,
-  },
-  profileName: {
-    ...typography.headline,
-    color: palette.text,
-  },
-  profileMeta: {
-    ...typography.bodySmall,
-    color: palette.textMuted,
-  },
-  menuGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.md,
-  },
-  profileAction: {
-    backgroundColor: palette.surfaceLow,
-    borderColor: "rgba(5, 5, 5, 0.05)",
-    borderRadius: radius.xl,
-    borderWidth: StyleSheet.hairlineWidth,
-    flexBasis: "47%",
-    flexGrow: 1,
-    gap: spacing.sm,
-    minHeight: 156,
-    minWidth: 150,
-    padding: spacing.md,
-    ...(shadow.card ?? {}),
-  },
-  profileActionDanger: {
-    backgroundColor: palette.redSoft,
-  },
-  profileActionIcon: {
-    alignItems: "center",
-    backgroundColor: palette.surface,
-    borderRadius: radius.full,
-    height: 44,
-    justifyContent: "center",
-    width: 44,
-  },
-  dangerIcon: {
-    backgroundColor: "rgba(164, 58, 58, 0.12)",
-  },
-  profileActionTitle: {
-    ...typography.body,
-    color: palette.text,
-    fontWeight: "800",
-  },
-  profileActionBody: {
-    ...typography.bodySmall,
-    color: palette.textMuted,
-  },
-  dangerText: {
-    color: palette.red,
-  },
-  preferencePanel: {
-    gap: spacing.sm,
-  },
-  preferenceRow: {
-    alignItems: "center",
-    borderTopColor: "rgba(5, 5, 5, 0.08)",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingTop: spacing.sm,
-  },
-  preferenceLabel: {
-    ...typography.bodySmall,
-    color: palette.textMuted,
-  },
-  preferenceValue: {
-    ...typography.bodySmall,
-    color: palette.text,
-    fontWeight: "800",
-  },
-  pressed: {
-    opacity: 0.84,
-    transform: [{ scale: 0.99 }],
-  },
-});

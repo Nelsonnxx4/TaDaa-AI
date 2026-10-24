@@ -4,11 +4,9 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 	SafeAreaView,
-	StyleSheet,
 } from "react-native";
 
 import { CookingScreen, IngredientStoreScreen } from "@/components/RecipeFlow";
-import { palette } from "@/constants/theme";
 import { getRecipeForRouteParams } from "@/utils/recipes";
 
 type ShopStep = "ingredients" | "cook";
@@ -31,10 +29,10 @@ export default function ShopRoute() {
 	}, [recipe.id]);
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
+		<SafeAreaView className="flex-1 bg-onboardingBg">
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
-				style={styles.appShell}
+				className="flex-1 bg-onboardingBg"
 			>
 				{step === "ingredients" ? (
 					<IngredientStoreScreen
@@ -53,14 +51,3 @@ export default function ShopRoute() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	safeArea: {
-		backgroundColor: palette.background,
-		flex: 1,
-	},
-	appShell: {
-		backgroundColor: palette.background,
-		flex: 1,
-	},
-});

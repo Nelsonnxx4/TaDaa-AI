@@ -1,9 +1,8 @@
-import { Image } from "expo-image";
+import { Image } from "@/components/StyledImage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
 	SafeAreaView,
-	StyleSheet,
 	Text,
 	View,
 	useWindowDimensions,
@@ -14,7 +13,7 @@ import {
 	PrimaryButton,
 	ProgressDots,
 } from "@/components/AppPrimitives";
-import { palette, radius, spacing, typography } from "@/constants/theme";
+import { palette, spacing } from "@/constants/theme";
 import { heroImage } from "@/data/mock";
 
 type OnboardingSlide = {
@@ -57,31 +56,28 @@ export default function OnboardingRoute() {
 
 	return (
 		<SafeAreaView
-			style={[styles.onboardingShell, isHero && styles.onboardingHeroShell]}
+			className={`flex-1 ${isHero ? "bg-dark" : "bg-onboardingBg"}`}
 		>
 			{slide.image ? (
 				<Image
 					contentFit="cover"
 					source={{ uri: slide.image }}
-					style={StyleSheet.absoluteFill}
+					className="absolute inset-0"
 				/>
 			) : null}
-			{isHero ? <View style={styles.heroScrim} /> : null}
+			{isHero ? <View className="absolute inset-0 bg-overlay-hero" /> : null}
 
 			<View
-				style={[
-					styles.onboardingContent,
-					{ width: contentWidth },
-					isNarrow
-						? styles.onboardingContentNarrow
-						: styles.onboardingContentWide,
-				]}
+				className={`flex-1 justify-between gap-6 pb-8 pt-6 ${
+					isNarrow ? "ml-5" : "self-center"
+				}`}
+				style={{ width: contentWidth }}
 			>
 				<ProgressDots current={index} total={onboardingSlides.length} />
 
-				<View style={styles.onboardingMain}>
-					<View style={styles.onboardingGraphic}>
-						<View style={styles.cameraHalo}>
+				<View className="flex-1 justify-center">
+					<View className="items-center justify-center">
+						<View className="h-[150px] w-[150px] items-center justify-center rounded-3xl border border-[rgba(255,255,255,0.36)] bg-[rgba(16,185,129,0.16)]">
 							<AppIcon
 								color={isHero ? palette.inverse : palette.primary}
 								name={slide.icon}
@@ -91,21 +87,11 @@ export default function OnboardingRoute() {
 					</View>
 				</View>
 
-				<View style={styles.onboardingBottom}>
-					<Text
-						style={[
-							styles.onboardingTitle,
-							isHero && styles.onboardingTitleLight,
-						]}
-					>
+				<View className="w-full gap-4">
+					<Text className={`text-display text-center ${isHero ? "text-inverse" : "text-accent200"}`}>
 						{slide.title}
 					</Text>
-					<Text
-						style={[
-							styles.onboardingBody,
-							isHero && styles.onboardingBodyLight,
-						]}
-					>
+					<Text className={`text-body text-center ${isHero ? "text-[rgba(248,250,247,0.92)]" : "text-textMuted"}`}>
 						{slide.body}
 					</Text>
 					<PrimaryButton
@@ -130,75 +116,3 @@ export default function OnboardingRoute() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	onboardingShell: {
-		backgroundColor: palette.background,
-		flex: 1,
-	},
-	onboardingHeroShell: {
-		backgroundColor: palette.dark,
-	},
-	heroScrim: {
-		backgroundColor: "rgba(24, 33, 28, 0.44)",
-		bottom: 0,
-		left: 0,
-		position: "absolute",
-		right: 0,
-		top: 0,
-	},
-	onboardingContent: {
-		flex: 1,
-		gap: spacing.lg,
-		justifyContent: "space-between",
-		paddingBottom: spacing.xl,
-		paddingTop: spacing.lg,
-	},
-	onboardingContentNarrow: {
-		marginLeft: spacing.gutter,
-	},
-	onboardingContentWide: {
-		alignSelf: "center",
-	},
-	onboardingMain: {
-		flex: 1,
-		justifyContent: "center",
-	},
-	onboardingGraphic: {
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	cameraHalo: {
-		alignItems: "center",
-		backgroundColor: "rgba(16, 185, 129, 0.16)",
-		borderColor: "rgba(255, 255, 255, 0.36)",
-		borderRadius: radius.xl,
-		borderWidth: StyleSheet.hairlineWidth,
-		height: 150,
-		justifyContent: "center",
-		width: 150,
-	},
-	onboardingBottom: {
-		gap: spacing.md,
-		width: "100%",
-	},
-	onboardingTitle: {
-		...typography.display,
-		color: palette.primary,
-		textAlign: "center",
-	},
-	onboardingTitleLight: {
-		color: palette.inverse,
-		textShadowColor: "rgba(0, 0, 0, 0.24)",
-		textShadowOffset: { width: 0, height: 2 },
-		textShadowRadius: 10,
-	},
-	onboardingBody: {
-		...typography.body,
-		color: palette.textMuted,
-		textAlign: "center",
-	},
-	onboardingBodyLight: {
-		color: "rgba(248, 250, 247, 0.92)",
-	},
-});

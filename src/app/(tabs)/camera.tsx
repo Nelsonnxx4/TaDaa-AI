@@ -1,4 +1,4 @@
-import { Image } from "expo-image";
+import { Image } from "@/components/StyledImage";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -6,19 +6,12 @@ import {
 	Alert,
 	Pressable,
 	SafeAreaView,
-	StyleSheet,
 	Text,
 	View,
 } from "react-native";
 
 import { AppIcon, GhostButton, SurfaceCard } from "@/components/AppPrimitives";
-import {
-	palette,
-	radius,
-	shadow,
-	spacing,
-	typography,
-} from "@/constants/theme";
+import { palette } from "@/constants/theme";
 import { heroImage, recipes } from "@/data/mock";
 
 const snapRecipe = recipes[2];
@@ -90,46 +83,46 @@ export default function CameraRoute() {
 	};
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
-			<View style={styles.appShell}>
-				<View style={styles.screenHeader}>
+		<SafeAreaView className="flex-1 bg-onboardingBg">
+			<View className="flex-1 gap-6 bg-onboardingBg px-5 pb-32 pt-6">
+				<View className="flex-row items-center justify-between">
 					<Pressable
 						onPress={() => router.replace("/home")}
-						style={styles.iconButton}
+						className="h-[42px] min-w-[42px] items-center justify-center rounded-full bg-surface px-2 shadow-sm"
 					>
 						<AppIcon color={palette.primary} name="chevron-back" size={24} />
 					</Pressable>
-					<Text style={styles.screenTitle}>Food Snap</Text>
-					<View style={styles.iconButton}>
+					<Text className="text-title text-text">Food Snap</Text>
+					<View className="h-[42px] min-w-[42px] items-center justify-center rounded-full bg-surface px-2 shadow-sm">
 						<AppIcon color={palette.primary} name="camera" size={22} />
 					</View>
 				</View>
 
-				<View style={styles.cameraPreview}>
+				<View className="min-h-[360px] flex-1 overflow-hidden rounded-3xl bg-surface-low shadow-sm">
 					<Image
 						contentFit="cover"
 						source={{ uri: selectedPhotoUri ?? heroImage }}
-						style={StyleSheet.absoluteFill}
+						className="absolute inset-0"
 					/>
-					<View style={styles.previewOverlay} />
-					<View style={styles.scanFrame}>
-						<View style={[styles.scanCorner, styles.topLeft]} />
-						<View style={[styles.scanCorner, styles.topRight]} />
-						<View style={[styles.scanCorner, styles.bottomLeft]} />
-						<View style={[styles.scanCorner, styles.bottomRight]} />
+					<View className="absolute inset-0 bg-[rgba(5,5,5,0.16)]" />
+					<View className="absolute bottom-[18%] left-6 right-6 top-[18%] rounded-3xl border border-[rgba(248,250,247,0.38)]">
+						<View className="absolute -left-0.5 -top-0.5 h-11 w-11 border-l-4 border-t-4 border-accent200" />
+						<View className="absolute -right-0.5 -top-0.5 h-11 w-11 border-r-4 border-t-4 border-accent200" />
+						<View className="absolute -bottom-0.5 -left-0.5 h-11 w-11 border-b-4 border-l-4 border-accent200" />
+						<View className="absolute -bottom-0.5 -right-0.5 h-11 w-11 border-b-4 border-r-4 border-accent200" />
 					</View>
 				</View>
 
-				<SurfaceCard style={styles.resultCard}>
-					<View style={styles.resultHeader}>
-						<View style={styles.resultIcon}>
+				<SurfaceCard className="gap-4">
+					<View className="flex-row items-center gap-4">
+						<View className="h-12 w-12 items-center justify-center rounded-xl bg-primarySoft">
 							<AppIcon color={palette.primary} name="camera" size={22} />
 						</View>
-						<View style={styles.resultCopy}>
-							<Text style={styles.resultTitle}>
+						<View className="min-w-0 flex-1 gap-1">
+							<Text className="text-body font-extrabold text-text">
 								{hasSelectedPhoto ? "Photo ready" : "Ready to scan"}
 							</Text>
-							<Text style={styles.resultBody}>
+							<Text className="text-body-sm text-textMuted">
 								{hasSelectedPhoto
 									? "Analyze this image to create the ingredient plan."
 									: "Capture or upload a dish photo to create the ingredient plan."}
@@ -138,7 +131,7 @@ export default function CameraRoute() {
 					</View>
 				</SurfaceCard>
 
-				<View style={styles.cameraActions}>
+				<View className="flex-row items-center justify-between gap-4">
 					<GhostButton
 						icon="images"
 						label="Upload"
@@ -148,12 +141,9 @@ export default function CameraRoute() {
 						accessibilityLabel="Snap food photo"
 						accessibilityRole="button"
 						onPress={openCamera}
-						style={({ pressed }) => [
-							styles.captureButton,
-							pressed && styles.capturePressed,
-						]}
+						className="h-[74px] w-[74px] items-center justify-center rounded-full border-[5px] border-accent200 bg-surface shadow-sm active:scale-[0.97] active:opacity-[0.86]"
 					>
-						<View style={styles.captureInner} />
+						<View className="h-12 w-12 rounded-full bg-accent200" />
 					</Pressable>
 					<GhostButton icon="sparkles" label="Demo" onPress={continueToShop} />
 				</View>
@@ -161,150 +151,3 @@ export default function CameraRoute() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	safeArea: {
-		backgroundColor: palette.background,
-		flex: 1,
-	},
-	appShell: {
-		backgroundColor: palette.background,
-		flex: 1,
-		gap: spacing.lg,
-		paddingBottom: 128,
-		paddingHorizontal: spacing.gutter,
-		paddingTop: spacing.lg,
-	},
-	screenHeader: {
-		alignItems: "center",
-		flexDirection: "row",
-		justifyContent: "space-between",
-	},
-	iconButton: {
-		alignItems: "center",
-		backgroundColor: palette.surface,
-		borderRadius: radius.full,
-		height: 42,
-		justifyContent: "center",
-		minWidth: 42,
-		paddingHorizontal: spacing.sm,
-		...(shadow.card ?? {}),
-	},
-	screenTitle: {
-		...typography.title,
-		color: palette.text,
-	},
-	cameraPreview: {
-		backgroundColor: palette.surfaceLow,
-		borderRadius: radius.xl,
-		flex: 1,
-		minHeight: 360,
-		overflow: "hidden",
-		...(shadow.card ?? {}),
-	},
-	previewOverlay: {
-		backgroundColor: "rgba(5, 5, 5, 0.16)",
-		bottom: 0,
-		left: 0,
-		position: "absolute",
-		right: 0,
-		top: 0,
-	},
-	scanFrame: {
-		borderColor: "rgba(248, 250, 247, 0.38)",
-		borderRadius: radius.xl,
-		borderWidth: StyleSheet.hairlineWidth,
-		bottom: "18%",
-		left: spacing.lg,
-		position: "absolute",
-		right: spacing.lg,
-		top: "18%",
-	},
-	scanCorner: {
-		borderColor: palette.primary,
-		height: 44,
-		position: "absolute",
-		width: 44,
-	},
-	topLeft: {
-		borderLeftWidth: 4,
-		borderTopWidth: 4,
-		left: -2,
-		top: -2,
-	},
-	topRight: {
-		borderRightWidth: 4,
-		borderTopWidth: 4,
-		right: -2,
-		top: -2,
-	},
-	bottomLeft: {
-		borderBottomWidth: 4,
-		borderLeftWidth: 4,
-		bottom: -2,
-		left: -2,
-	},
-	bottomRight: {
-		borderBottomWidth: 4,
-		borderRightWidth: 4,
-		bottom: -2,
-		right: -2,
-	},
-	resultCard: {
-		gap: spacing.md,
-	},
-	resultHeader: {
-		alignItems: "center",
-		flexDirection: "row",
-		gap: spacing.md,
-	},
-	resultIcon: {
-		alignItems: "center",
-		backgroundColor: palette.primarySoft,
-		borderRadius: radius.md,
-		height: 48,
-		justifyContent: "center",
-		width: 48,
-	},
-	resultCopy: {
-		flex: 1,
-		gap: spacing.xs,
-		minWidth: 0,
-	},
-	resultTitle: {
-		...typography.body,
-		color: palette.text,
-		fontWeight: "800",
-	},
-	resultBody: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-	},
-	cameraActions: {
-		alignItems: "center",
-		flexDirection: "row",
-		gap: spacing.md,
-		justifyContent: "space-between",
-	},
-	captureButton: {
-		alignItems: "center",
-		backgroundColor: palette.surface,
-		borderColor: palette.primary,
-		borderRadius: radius.full,
-		borderWidth: 5,
-		height: 74,
-		justifyContent: "center",
-		width: 74,
-		...(shadow.card ?? {}),
-	},
-	captureInner: {
-		backgroundColor: palette.primary,
-		borderRadius: radius.full,
-		height: 48,
-		width: 48,
-	},
-	capturePressed: {
-		opacity: 0.86,
-		transform: [{ scale: 0.97 }],
-	},
-});

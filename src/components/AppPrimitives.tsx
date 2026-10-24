@@ -1,23 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
+import { Image } from "@/components/StyledImage";
 import type { ComponentProps, PropsWithChildren } from "react";
 import {
 	type ColorValue,
 	Pressable,
-	StyleProp,
-	StyleSheet,
 	Text,
 	View,
-	ViewStyle,
 } from "react-native";
 
-import {
-	palette,
-	radius,
-	shadow,
-	spacing,
-	typography,
-} from "@/constants/theme";
+import { palette } from "@/constants/theme";
 import type { AppScreen, Recipe } from "@/types/app";
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
@@ -34,9 +25,21 @@ export function AppIcon({ name, color = palette.text, size = 22 }: IconProps) {
 
 export function SurfaceCard({
 	children,
-	style,
-}: PropsWithChildren<{ style?: StyleProp<ViewStyle> }>) {
-	return <View style={[styles.card, style]}>{children}</View>;
+	className,
+}: PropsWithChildren<{ className?: string }>) {
+	const hasBackgroundClass = className
+		?.split(/\s+/)
+		.some((classToken) => classToken.startsWith("bg-"));
+
+	return (
+		<View
+			className={`rounded-xl border border-[rgba(5,5,5,0.05)] ${
+				hasBackgroundClass ? "" : "bg-surface"
+			} p-4 shadow-sm ${className ?? ""}`}
+		>
+			{children}
+		</View>
+	);
 }
 
 export function Pill({
@@ -50,11 +53,6 @@ export function Pill({
 	tone?: "green" | "amber" | "neutral";
 	onPress?: () => void;
 }) {
-	const backgroundColor = active
-		? tone === "amber"
-			? palette.amberSoft
-			: palette.surface
-		: palette.surfaceLow;
 	const color = active
 		? tone === "amber"
 			? palette.text
@@ -64,15 +62,17 @@ export function Pill({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={[
-				styles.pill,
-				{
-					backgroundColor,
-					borderColor: active ? "rgba(5, 5, 5, 0.1)" : "transparent",
-				},
-			]}
+			className={`min-h-9 items-center justify-center rounded-full border px-4 ${
+				active
+					? tone === "amber"
+						? "border-[rgba(5,5,5,0.1)] bg-amberSoft"
+						: "border-[rgba(5,5,5,0.1)] bg-surface"
+					: "border-transparent bg-surface-low"
+			}`}
 		>
-			<Text style={[styles.pillText, { color }]}>{label}</Text>
+			<Text className={`text-label ${color === palette.text ? "text-text" : "text-textMuted"}`}>
+				{label}
+			</Text>
 		</Pressable>
 	);
 }
@@ -92,13 +92,11 @@ export function PrimaryButton({
 		<Pressable
 			disabled={disabled}
 			onPress={onPress}
-			style={({ pressed }) => [
-				styles.primaryButton,
-				disabled && styles.disabledButton,
-				pressed && !disabled && styles.pressed,
-			]}
+			className={`min-h-[54px] flex-row items-center justify-center gap-2 rounded-full px-6 shadow-md ${
+				disabled ? "bg-outline" : "bg-accent200 active:scale-[0.99] active:opacity-80"
+			}`}
 		>
-			<Text style={styles.primaryButtonText}>{label}</Text>
+			<Text className="text-body font-extrabold text-inverse">{label}</Text>
 			{icon ? <AppIcon color={palette.inverse} name={icon} size={20} /> : null}
 		</Pressable>
 	);
@@ -116,10 +114,10 @@ export function GhostButton({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={({ pressed }) => [styles.ghostButton, pressed && styles.pressed]}
+			className="min-h-11 flex-row items-center gap-2 self-start rounded-full bg-accent200 px-4 shadow-md active:scale-[0.99] active:opacity-80"
 		>
 			{icon ? <AppIcon color={palette.inverse} name={icon} size={19} /> : null}
-			<Text style={styles.ghostButtonText}>{label}</Text>
+			<Text className="text-body-sm font-bold text-inverse">{label}</Text>
 		</Pressable>
 	);
 }
@@ -132,9 +130,9 @@ export function SectionHeader({
 	action?: string;
 }) {
 	return (
-		<View style={styles.sectionHeader}>
-			<Text style={styles.sectionTitle}>{title}</Text>
-			{action ? <Text style={styles.sectionAction}>{action}</Text> : null}
+		<View className="mb-4 flex-row items-center justify-between">
+			<Text className="text-title text-text">{title}</Text>
+			{action ? <Text className="text-body-sm font-bold text-accent200">{action}</Text> : null}
 		</View>
 	);
 }
@@ -147,14 +145,13 @@ export function ProgressDots({
 	current: number;
 }) {
 	return (
-		<View style={styles.progressRow}>
+		<View className="w-full flex-row gap-1 self-stretch">
 			{Array.from({ length: total }).map((_, index) => (
 				<View
 					key={index}
-					style={[
-						styles.progressTrack,
-						index <= current && styles.progressActive,
-					]}
+					className={`h-1.5 flex-1 rounded-full ${
+						index <= current ? "bg-accent200" : "bg-[rgba(255,255,255,0.35)]"
+					}`}
 				/>
 			))}
 		</View>
@@ -169,33 +166,30 @@ export function FoodCard({
 	onPress?: () => void;
 }) {
 	const isTopRated = recipe.rating >= 4.75;
-	const statusColor = isTopRated ? palette.green : palette.amber;
 	const statusLabel = isTopRated ? "Good" : "Solid";
 
 	return (
 		<Pressable
 			onPress={onPress}
-			style={({ pressed }) => [styles.foodCard, pressed && styles.pressed]}
+			className="min-h-[124px] min-w-[50px] flex-row items-center gap-2 overflow-hidden rounded-xl bg-surface-low p-2 shadow-sm active:scale-[0.99] active:opacity-80"
 		>
 			<Image
 				contentFit="cover"
 				source={{ uri: recipe.imageUrl }}
-				style={styles.foodImage}
+				className="h-24 w-[82px] rounded-lg bg-surface-muted"
 			/>
-			<View style={styles.foodContent}>
-				<Text numberOfLines={2} style={styles.foodTitle}>
+			<View className="min-w-0 flex-1 gap-1">
+				<Text className="text-title text-text" numberOfLines={2}>
 					{recipe.name}
 				</Text>
-				<View style={styles.foodMeta}>
-					<View
-						style={[styles.foodStatusDot, { backgroundColor: statusColor }]}
-					/>
-					<Text style={styles.foodMetaText}>{statusLabel}</Text>
+				<View className="flex-row flex-wrap items-center gap-1">
+					<View className={`h-2 w-2 rounded-full ${isTopRated ? "bg-green" : "bg-amber"}`} />
+					<Text className="text-label text-textMuted">{statusLabel}</Text>
 					<AppIcon color={palette.textMuted} name="time-outline" size={13} />
-					<Text style={styles.foodMetaText}>{recipe.time}</Text>
+					<Text className="text-label text-textMuted">{recipe.time}</Text>
 				</View>
 			</View>
-			<View style={styles.foodChevron}>
+			<View className="h-[34px] w-[34px] items-center justify-center rounded-full bg-surface">
 				<AppIcon color={palette.text} name="chevron-forward" size={17} />
 			</View>
 		</Pressable>
@@ -210,15 +204,15 @@ export function HeaderBar({
 	subtitle?: string;
 }) {
 	return (
-		<View style={styles.headerBar}>
-			<View style={styles.headerCopy}>
-				<Text style={styles.logo}>{title}</Text>
+		<View className="mb-6 flex-row items-center justify-between">
+			<View className="min-w-0 flex-1">
+				<Text className="text-display text-text">{title}</Text>
 				{subtitle ? (
-					<Text style={styles.headerSubtitle}>{subtitle}</Text>
+					<Text className="text-body-sm text-textMuted">{subtitle}</Text>
 				) : null}
 			</View>
-			<View style={styles.headerActions}>
-				<View style={styles.avatar}>
+			<View className="flex-row items-center gap-2">
+				<View className="h-10 w-10 items-center justify-center rounded-full bg-surface shadow-sm">
 					<AppIcon color={palette.primary} name="person" size={20} />
 				</View>
 			</View>
@@ -264,7 +258,7 @@ export function BottomNav({
 	onSnap: () => void;
 }) {
 	return (
-		<View style={styles.bottomNav}>
+		<View className="absolute bottom-6 left-5 right-5 flex-row items-center justify-around rounded-full bg-accent200 px-2 py-2 shadow-md">
 			{tabs.map((tab) => {
 				const isActive = tab.activeFor.includes(active);
 				const isSnap = tab.key === "snap";
@@ -278,13 +272,11 @@ export function BottomNav({
 								onChange(tab.key as AppScreen);
 							}
 						}}
-						style={[
-							styles.navItem,
-							isActive && styles.navActive,
-							isSnap && styles.navSnap,
-						]}
+						className={`min-w-[58px] items-center gap-0.5 rounded-xl px-2 py-1 ${
+							isActive ? "bg-[rgba(255,255,255,0.18)]" : ""
+						} ${isSnap ? "-mt-6" : ""}`}
 					>
-						<View style={isSnap ? styles.navSnapIcon : undefined}>
+						<View className={isSnap ? "mb-0.5 h-[50px] w-[50px] items-center justify-center rounded-full bg-surface shadow-sm" : undefined}>
 							<AppIcon
 								color={
 									isSnap
@@ -298,11 +290,9 @@ export function BottomNav({
 							/>
 						</View>
 						<Text
-							style={[
-								styles.navText,
-								isActive && styles.navTextActive,
-								isSnap && styles.navSnapText,
-							]}
+							className={`text-label ${
+								isActive || isSnap ? "text-inverse" : "text-[rgba(255,255,255,0.72)]"
+							}`}
 						>
 							{tab.label}
 						</Text>
@@ -312,226 +302,3 @@ export function BottomNav({
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	card: {
-		backgroundColor: palette.surface,
-		borderColor: "rgba(5, 5, 5, 0.05)",
-		borderRadius: radius.xl,
-		borderWidth: StyleSheet.hairlineWidth,
-		padding: spacing.md,
-		...(shadow.card ?? {}),
-	},
-	pill: {
-		alignItems: "center",
-		borderRadius: radius.full,
-		borderWidth: StyleSheet.hairlineWidth,
-		minHeight: 36,
-		justifyContent: "center",
-		paddingHorizontal: spacing.md,
-	},
-	pillText: {
-		...typography.label,
-	},
-	primaryButton: {
-		alignItems: "center",
-		backgroundColor: palette.primary,
-		borderRadius: radius.full,
-		flexDirection: "row",
-		gap: spacing.sm,
-		justifyContent: "center",
-		minHeight: 54,
-		paddingHorizontal: spacing.lg,
-		...(shadow.float ?? {}),
-	},
-	primaryButtonText: {
-		...typography.body,
-		color: palette.inverse,
-		fontWeight: "800",
-	},
-	disabledButton: {
-		backgroundColor: palette.outline,
-	},
-	ghostButton: {
-		alignItems: "center",
-		alignSelf: "flex-start",
-		backgroundColor: palette.primary,
-		borderRadius: radius.full,
-		flexDirection: "row",
-		gap: spacing.sm,
-		minHeight: 44,
-		paddingHorizontal: spacing.md,
-		...(shadow.float ?? {}),
-	},
-	ghostButtonText: {
-		...typography.bodySmall,
-		color: palette.inverse,
-		fontWeight: "700",
-	},
-	pressed: {
-		opacity: 0.82,
-		transform: [{ scale: 0.99 }],
-	},
-	sectionHeader: {
-		alignItems: "center",
-		flexDirection: "row",
-		justifyContent: "space-between",
-		marginBottom: spacing.md,
-	},
-	sectionTitle: {
-		...typography.title,
-		color: palette.text,
-	},
-	sectionAction: {
-		...typography.bodySmall,
-		color: palette.primary,
-		fontWeight: "700",
-	},
-	progressRow: {
-		alignSelf: "stretch",
-		flexDirection: "row",
-		gap: spacing.xs,
-		width: "100%",
-	},
-	progressTrack: {
-		backgroundColor: "rgba(255, 255, 255, 0.35)",
-		borderRadius: radius.full,
-		flex: 1,
-		height: 6,
-	},
-	progressActive: {
-		backgroundColor: palette.primary,
-	},
-	foodCard: {
-		alignItems: "center",
-		backgroundColor: palette.surfaceLow,
-		borderRadius: radius.xl,
-		flexDirection: "row",
-		gap: spacing.sm,
-		minHeight: 124,
-		minWidth: 50,
-		overflow: "hidden",
-		padding: spacing.sm,
-		...(shadow.card ?? {}),
-	},
-	foodImage: {
-		backgroundColor: palette.surfaceMuted,
-		borderRadius: radius.lg,
-		height: 96,
-		width: 82,
-	},
-	foodContent: {
-		flex: 1,
-		gap: spacing.xs,
-		minWidth: 0,
-	},
-	foodTitle: {
-		...typography.title,
-		color: palette.text,
-	},
-	foodMeta: {
-		alignItems: "center",
-		flexDirection: "row",
-		flexWrap: "wrap",
-		gap: spacing.xs,
-	},
-	foodStatusDot: {
-		borderRadius: radius.full,
-		height: 8,
-		width: 8,
-	},
-	foodMetaText: {
-		...typography.label,
-		color: palette.textMuted,
-	},
-	foodChevron: {
-		alignItems: "center",
-		backgroundColor: palette.surface,
-		borderRadius: radius.full,
-		height: 34,
-		justifyContent: "center",
-		width: 34,
-	},
-	headerBar: {
-		alignItems: "center",
-		flexDirection: "row",
-		justifyContent: "space-between",
-		marginBottom: spacing.lg,
-	},
-	headerCopy: {
-		flex: 1,
-		minWidth: 0,
-	},
-	logo: {
-		...typography.display,
-		color: palette.text,
-	},
-	headerSubtitle: {
-		...typography.bodySmall,
-		color: palette.textMuted,
-	},
-	headerActions: {
-		alignItems: "center",
-		flexDirection: "row",
-		gap: spacing.sm,
-	},
-	avatar: {
-		alignItems: "center",
-		backgroundColor: palette.surface,
-		borderRadius: radius.full,
-		height: 40,
-		justifyContent: "center",
-		width: 40,
-		...(shadow.card ?? {}),
-	},
-	bottomNav: {
-		alignItems: "center",
-		backgroundColor: palette.primary,
-		borderRadius: radius.full,
-		borderTopWidth: 0,
-		bottom: spacing.lg,
-		flexDirection: "row",
-		justifyContent: "space-around",
-		left: spacing.gutter,
-		paddingBottom: spacing.sm,
-		paddingHorizontal: spacing.sm,
-		paddingTop: spacing.sm,
-		position: "absolute",
-		right: spacing.gutter,
-		...(shadow.float ?? {}),
-	},
-	navItem: {
-		alignItems: "center",
-		borderRadius: radius.md,
-		gap: 2,
-		minWidth: 58,
-		paddingHorizontal: spacing.sm,
-		paddingVertical: spacing.xs,
-	},
-	navActive: {
-		backgroundColor: "rgba(255, 255, 255, 0.18)",
-	},
-	navSnap: {
-		marginTop: -spacing.lg,
-	},
-	navSnapIcon: {
-		alignItems: "center",
-		backgroundColor: palette.surface,
-		borderRadius: radius.full,
-		height: 50,
-		justifyContent: "center",
-		marginBottom: 2,
-		width: 50,
-		...(shadow.card ?? {}),
-	},
-	navText: {
-		...typography.label,
-		color: "rgba(255, 255, 255, 0.72)",
-	},
-	navTextActive: {
-		color: palette.inverse,
-	},
-	navSnapText: {
-		color: palette.inverse,
-	},
-});

@@ -1,28 +1,28 @@
 /** @type {import('tailwindcss').Config} */
 const designTokens = {
 	colors: {
-		canvas: "#FAF9F6",
+		// Primary
+		accent200: "#006C49",
+		accent100: "#10B981",
+		primarySoft: "#DDF8EA",
+		green: "#10B981",
+		amber: "#F59E0B",
+		amberSoft: "#FFF1D6",
+		red: "#A43A3A",
+		redSoft: "#FFE2DF",
+		onboardingBg: "#FAF9F6",
+
 		surface: {
 			DEFAULT: "#FFFFFF",
 			low: "#F4F3F1",
 			muted: "#E9E8E5",
 		},
-		brand: {
-			DEFAULT: "#006C49",
-			bright: "#10B981",
-			soft: "#DDF8EA",
-		},
-		accent: {
-			amber: "#F59E0B",
-			"amber-soft": "#FFF1D6",
-			red: "#A43A3A",
-			"red-soft": "#FFE2DF",
-		},
-		content: {
-			DEFAULT: "#1A1C1A",
-			muted: "#3C4A42",
-			inverse: "#F8FAF7",
-		},
+
+		// Texts
+		text: "#1A1C1A",
+		textMuted: "#3C4A42",
+		inverse: "#F8FAF7",
+
 		outline: "#BBCABF",
 		dark: "#18211C",
 		overlay: {
