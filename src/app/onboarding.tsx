@@ -1,8 +1,8 @@
-import { Image } from "@/components/StyledImage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
 	SafeAreaView,
+	Pressable,
 	Text,
 	View,
 	useWindowDimensions,
@@ -14,20 +14,17 @@ import {
 	ProgressDots,
 } from "@/components/AppPrimitives";
 import { palette, spacing } from "@/constants/theme";
-import { heroImage } from "@/data/mock";
 
 type OnboardingSlide = {
 	title: string;
 	body: string;
-	image?: string;
 	icon: "camera" | "restaurant" | "search";
 };
 
 const onboardingSlides: OnboardingSlide[] = [
 	{
-		title: "Ever wanted to recreate a meal you had at a restaurant?",
-		body: "But you didn't know how to make it at home.",
-		image: heroImage,
+		title: "Welcome to Ta-Daa AI!",
+		body: "Turn a dish photo into ingredients, shopping ideas, and easy steps to cook at home.",
 		icon: "restaurant",
 	},
 	{
@@ -47,7 +44,7 @@ export default function OnboardingRoute() {
 	const [index, setIndex] = useState(0);
 	const { width } = useWindowDimensions();
 	const slide = onboardingSlides[index];
-	const isHero = Boolean(slide.image);
+	const isWelcome = index === 0;
 	const isNarrow = width < 600;
 	const contentWidth = Math.min(
 		Math.max(width - spacing.gutter * 2, 240),
@@ -56,44 +53,64 @@ export default function OnboardingRoute() {
 
 	return (
 		<SafeAreaView
-			className={`flex-1 ${isHero ? "bg-dark" : "bg-onboardingBg"}`}
+			className={`flex-1 ${isWelcome ? "bg-accent200" : "bg-onboardingBg"}`}
 		>
-			{slide.image ? (
-				<Image
-					contentFit="cover"
-					source={{ uri: slide.image }}
-					className="absolute inset-0"
-				/>
-			) : null}
-			{isHero ? <View className="absolute inset-0 bg-overlay-hero" /> : null}
-
 			<View
 				className={`flex-1 justify-between gap-6 pb-8 pt-6 ${
 					isNarrow ? "ml-5" : "self-center"
 				}`}
 				style={{ width: contentWidth }}
 			>
-				<ProgressDots current={index} total={onboardingSlides.length} />
+				{isWelcome ? (
+					<Text className="text-title font-extrabold text-inverse">
+						Ta-Daa AI
+					</Text>
+				) : (
+					<ProgressDots current={index} total={onboardingSlides.length} />
+				)}
 
 				<View className="flex-1 justify-center">
-					<View className="items-center justify-center">
-						<View className="h-[150px] w-[150px] items-center justify-center rounded-3xl border border-[rgba(255,255,255,0.36)] bg-[rgba(16,185,129,0.16)]">
-							<AppIcon
-								color={isHero ? palette.inverse : palette.primary}
-								name={slide.icon}
-								size={58}
-							/>
+					{!isWelcome ? (
+						<View className="items-center justify-center">
+							<View className="h-[150px] w-[150px] items-center justify-center rounded-3xl border border-[rgba(255,255,255,0.36)] bg-[rgba(16,185,129,0.16)]">
+								<AppIcon
+									color={palette.primary}
+									name={slide.icon}
+									size={58}
+								/>
+							</View>
 						</View>
+					) : null}
+					<View className={`gap-4 ${isWelcome ? "mt-0" : "mt-8"}`}>
+						<Text
+							className={`text-center ${
+								isWelcome
+									? "text-headline text-inverse"
+									: "text-display text-accent200"
+							}`}
+						>
+							{slide.title}
+						</Text>
+						<Text
+							className={`text-center ${
+								isWelcome
+									? "text-body-sm text-[rgba(248,250,247,0.88)]"
+									: "text-body text-textMuted"
+							}`}
+						>
+							{slide.body}
+						</Text>
 					</View>
 				</View>
 
 				<View className="w-full gap-4">
-					<Text className={`text-display text-center ${isHero ? "text-inverse" : "text-accent200"}`}>
-						{slide.title}
-					</Text>
-					<Text className={`text-body text-center ${isHero ? "text-[rgba(248,250,247,0.92)]" : "text-textMuted"}`}>
-						{slide.body}
-					</Text>
+					{isWelcome ? (
+						<ProgressDots
+							current={index}
+							onDark
+							total={onboardingSlides.length}
+						/>
+					) : null}
 					<PrimaryButton
 						icon={
 							index === onboardingSlides.length - 1
@@ -103,6 +120,7 @@ export default function OnboardingRoute() {
 						label={
 							index === onboardingSlides.length - 1 ? "Get Started" : "Next"
 						}
+						inverse={isWelcome}
 						onPress={() => {
 							if (index === onboardingSlides.length - 1) {
 								router.replace("/auth");
@@ -111,6 +129,22 @@ export default function OnboardingRoute() {
 							}
 						}}
 					/>
+					{isWelcome ? (
+						<View className="flex-row justify-center">
+							<Text className="text-body-sm text-[rgba(248,250,247,0.88)]">
+								Already have an account?{" "}
+							</Text>
+							<Pressable
+								accessibilityRole="button"
+								className="active:opacity-80"
+								onPress={() => router.replace("/auth")}
+							>
+								<Text className="text-body-sm font-extrabold text-inverse">
+									Sign in
+								</Text>
+							</Pressable>
+						</View>
+					) : null}
 				</View>
 			</View>
 		</SafeAreaView>

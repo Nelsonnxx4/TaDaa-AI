@@ -1,37 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("./src/components/ui/colors");
+
 const designTokens = {
-	colors: {
-		// Primary
-		accent200: "#006C49",
-		accent100: "#10B981",
-		primarySoft: "#DDF8EA",
-		green: "#10B981",
-		amber: "#F59E0B",
-		amberSoft: "#FFF1D6",
-		red: "#A43A3A",
-		redSoft: "#FFE2DF",
-		onboardingBg: "#FAF9F6",
-
-		surface: {
-			DEFAULT: "#FFFFFF",
-			low: "#F4F3F1",
-			muted: "#E9E8E5",
-		},
-
-		// Texts
-		text: "#1A1C1A",
-		textMuted: "#3C4A42",
-		inverse: "#F8FAF7",
-
-		outline: "#BBCABF",
-		dark: "#18211C",
-		overlay: {
-			hero: "rgba(24, 33, 28, 0.44)",
-			light: "rgba(255, 255, 255, 0.18)",
-			muted: "rgba(255, 255, 255, 0.35)",
-			soft: "rgba(255, 255, 255, 0.72)",
-		},
-	},
 	spacing: {
 		xs: "4px",
 		sm: "8px",
@@ -60,7 +30,10 @@ module.exports = {
 	content: ["./src/**/*.{js,jsx,ts,tsx}"],
 	presets: [require("nativewind/preset")],
 	theme: {
-		extend: designTokens,
+		extend: {
+			...designTokens,
+			colors,
+		},
 	},
 	plugins: [],
 };

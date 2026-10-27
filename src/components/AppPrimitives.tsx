@@ -1,12 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Image } from "@/components/StyledImage";
+import { Ionicons } from "@expo/vector-icons";
 import type { ComponentProps, PropsWithChildren } from "react";
-import {
-	type ColorValue,
-	Pressable,
-	Text,
-	View,
-} from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { palette } from "@/constants/theme";
 import type { AppScreen, Recipe } from "@/types/app";
@@ -15,7 +10,7 @@ type IconName = ComponentProps<typeof Ionicons>["name"];
 
 type IconProps = {
 	name: IconName;
-	color?: ColorValue;
+	color?: ComponentProps<typeof Ionicons>["color"];
 	size?: number;
 };
 
@@ -70,7 +65,9 @@ export function Pill({
 					: "border-transparent bg-surface-low"
 			}`}
 		>
-			<Text className={`text-label ${color === palette.text ? "text-text" : "text-textMuted"}`}>
+			<Text
+				className={`text-label ${color === palette.text ? "text-text" : "text-textMuted"}`}
+			>
 				{label}
 			</Text>
 		</Pressable>
@@ -82,22 +79,40 @@ export function PrimaryButton({
 	icon,
 	onPress,
 	disabled,
+	inverse = false,
 }: {
 	label: string;
 	icon?: IconName;
 	onPress?: () => void;
 	disabled?: boolean;
+	inverse?: boolean;
 }) {
 	return (
 		<Pressable
 			disabled={disabled}
 			onPress={onPress}
 			className={`min-h-[54px] flex-row items-center justify-center gap-2 rounded-full px-6 shadow-md ${
-				disabled ? "bg-outline" : "bg-accent200 active:scale-[0.99] active:opacity-80"
+				disabled
+					? "bg-outline"
+					: inverse
+						? "bg-inverse active:scale-[0.99] active:opacity-80"
+						: "bg-accent200 active:scale-[0.99] active:opacity-80"
 			}`}
 		>
-			<Text className="text-body font-extrabold text-inverse">{label}</Text>
-			{icon ? <AppIcon color={palette.inverse} name={icon} size={20} /> : null}
+			<Text
+				className={`text-body font-extrabold ${
+					inverse && !disabled ? "text-accent200" : "text-inverse"
+				}`}
+			>
+				{label}
+			</Text>
+			{icon ? (
+				<AppIcon
+					color={inverse && !disabled ? palette.primary : palette.inverse}
+					name={icon}
+					size={20}
+				/>
+			) : null}
 		</Pressable>
 	);
 }
@@ -132,7 +147,9 @@ export function SectionHeader({
 	return (
 		<View className="mb-4 flex-row items-center justify-between">
 			<Text className="text-title text-text">{title}</Text>
-			{action ? <Text className="text-body-sm font-bold text-accent200">{action}</Text> : null}
+			{action ? (
+				<Text className="text-body-sm font-bold text-accent200">{action}</Text>
+			) : null}
 		</View>
 	);
 }
@@ -140,9 +157,11 @@ export function SectionHeader({
 export function ProgressDots({
 	total,
 	current,
+	onDark = false,
 }: {
 	total: number;
 	current: number;
+	onDark?: boolean;
 }) {
 	return (
 		<View className="w-full flex-row gap-1 self-stretch">
@@ -150,7 +169,11 @@ export function ProgressDots({
 				<View
 					key={index}
 					className={`h-1.5 flex-1 rounded-full ${
-						index <= current ? "bg-accent200" : "bg-[rgba(255,255,255,0.35)]"
+						index <= current
+							? onDark
+								? "bg-inverse"
+								: "bg-accent200"
+							: "bg-[rgba(255,255,255,0.35)]"
 					}`}
 				/>
 			))}
@@ -183,7 +206,9 @@ export function FoodCard({
 					{recipe.name}
 				</Text>
 				<View className="flex-row flex-wrap items-center gap-1">
-					<View className={`h-2 w-2 rounded-full ${isTopRated ? "bg-green" : "bg-amber"}`} />
+					<View
+						className={`h-2 w-2 rounded-full ${isTopRated ? "bg-green" : "bg-amber"}`}
+					/>
 					<Text className="text-label text-textMuted">{statusLabel}</Text>
 					<AppIcon color={palette.textMuted} name="time-outline" size={13} />
 					<Text className="text-label text-textMuted">{recipe.time}</Text>
@@ -276,7 +301,13 @@ export function BottomNav({
 							isActive ? "bg-[rgba(255,255,255,0.18)]" : ""
 						} ${isSnap ? "-mt-6" : ""}`}
 					>
-						<View className={isSnap ? "mb-0.5 h-[50px] w-[50px] items-center justify-center rounded-full bg-surface shadow-sm" : undefined}>
+						<View
+							className={
+								isSnap
+									? "mb-0.5 h-[50px] w-[50px] items-center justify-center rounded-full bg-surface shadow-sm"
+									: undefined
+							}
+						>
 							<AppIcon
 								color={
 									isSnap
@@ -291,7 +322,9 @@ export function BottomNav({
 						</View>
 						<Text
 							className={`text-label ${
-								isActive || isSnap ? "text-inverse" : "text-[rgba(255,255,255,0.72)]"
+								isActive || isSnap
+									? "text-inverse"
+									: "text-[rgba(255,255,255,0.72)]"
 							}`}
 						>
 							{tab.label}

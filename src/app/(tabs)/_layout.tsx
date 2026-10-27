@@ -34,7 +34,11 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <AppIcon color={color} name="home" size={size} />
+            <AppIcon
+              color={typeof color === "string" ? color : palette.inverse}
+              name="home"
+              size={size}
+            />
           ),
         }}
       />
@@ -43,7 +47,11 @@ export default function TabLayout() {
         options={{
           title: "Pantry",
           tabBarIcon: ({ color, size }) => (
-            <AppIcon color={color} name="basket" size={size} />
+            <AppIcon
+              color={typeof color === "string" ? color : palette.inverse}
+              name="basket"
+              size={size}
+            />
           ),
         }}
       />
@@ -52,7 +60,11 @@ export default function TabLayout() {
         options={{
           title: "Snap",
           tabBarIcon: ({ color, size }) => (
-            <AppIcon color={color} name="camera" size={size} />
+            <AppIcon
+              color={typeof color === "string" ? color : palette.inverse}
+              name="camera"
+              size={size}
+            />
           ),
         }}
       />
@@ -61,7 +73,11 @@ export default function TabLayout() {
         options={{
           title: "Shop",
           tabBarIcon: ({ color, size }) => (
-            <AppIcon color={color} name="storefront" size={size} />
+            <AppIcon
+              color={typeof color === "string" ? color : palette.inverse}
+              name="storefront"
+              size={size}
+            />
           ),
         }}
       />
@@ -70,7 +86,11 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <AppIcon color={color} name="person" size={size} />
+            <AppIcon
+              color={typeof color === "string" ? color : palette.inverse}
+              name="person"
+              size={size}
+            />
           ),
         }}
       />
