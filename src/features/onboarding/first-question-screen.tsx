@@ -2,7 +2,7 @@ import { View, Text, Image, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Question1() {
+export function FirstQuestionScreen() {
 	const router = useRouter();
 
 	const answer = (value: boolean) => {
