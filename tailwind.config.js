@@ -2,6 +2,15 @@
 const colors = require("./src/components/ui/colors");
 
 const designTokens = {
+	accent: {
+		50: "#2D7A5A",
+		100: "#10B981",
+		200: "#09895E",
+		300: "#006C49",
+		400: "#005D3E",
+		500: "#004D34",
+		600: "#00422C",
+	},
 	spacing: {
 		xs: "4px",
 		sm: "8px",
